@@ -13,7 +13,6 @@ exports.createQuiz = expressAsyncHandler(async (req, res, next) => {
     try {
 
         // add here logic create quiz
-
         res.status(200).json({ message: "test quiz create" })
 
 
@@ -38,7 +37,7 @@ exports.getAllQuiz = expressAsyncHandler(async (req, res, next) => {
     // here we are going to put logic to bring all quizz
     const query = 'SELECT * FROM quiz';
   
-    db.query(query, (err, results) => {
+    dd.query(query, (err, results) => {
       if (err) {
         console.error('Error executing query:', err);
         res.status(500).send('Error fetching data');
