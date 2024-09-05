@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
       return;
     }
     
-    res.render('index', { users: results });
+    res.render('index', { quizes: results });
   });
 });
 
