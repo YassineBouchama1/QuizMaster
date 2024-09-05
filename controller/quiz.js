@@ -29,6 +29,33 @@ exports.createQuiz = expressAsyncHandler(async (req, res, next) => {
 // @desc    get Quiz with id 
 //// @route   DELETE /api/v1/quiz/:id
 // @access  Private/studenty-teacher
+exports.getAllQuiz = expressAsyncHandler(async (req, res, next) => {
+
+
+
+
+
+    // here we are going to put logic to bring all quizz
+    const query = 'SELECT * FROM quiz';
+  
+    db.query(query, (err, results) => {
+      if (err) {
+        console.error('Error executing query:', err);
+        res.status(500).send('Error fetching data');
+        return;
+      }
+      
+      res.render('index', { users: results });
+    });
+    
+
+})
+
+
+
+// @desc    get Quiz with id 
+//// @route   DELETE /api/v1/quiz/:id
+// @access  Private/studenty-teacher
 exports.getOneQuiz = expressAsyncHandler(async (req, res, next) => {
 
 
@@ -37,7 +64,6 @@ exports.getOneQuiz = expressAsyncHandler(async (req, res, next) => {
 
     // add here to get quiz
 
-    res.status(200).json({ message: `this is quiz id you want : ${id}` })
 
 
 
