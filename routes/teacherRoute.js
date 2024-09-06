@@ -1,24 +1,21 @@
 const express = require('express');
 const {
-  createTeacherForm,
 
   getAllTeachers,
   getTeacherById,
-  createTeacherApi,
+
 } = require('../controllers/teacherController');
+const { protect } = require('../middleWares/guard');
 
 const router = express.Router();
 
 router.route('/')
-  .get(getAllTeachers)
+  .get(protect, getAllTeachers)
 
-
-router.route('/create')
-  .get(createTeacherForm)
-  .post(createTeacherApi);
 
 router.route('/:id')
-  .get(getTeacherById)
+  .get(protect, getTeacherById)
 
 
 module.exports = router;
+

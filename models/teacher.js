@@ -47,9 +47,21 @@ const getTeacherById = (id, callback) => {
   });
 };
 
+const getTeacherByEmail = (email, callback) => {
+  // console.log('inside getTeacherByEmail')
+  const sql = 'SELECT * FROM teachers WHERE email = ?';
+  db.query(sql, [email], (err, results) => {
+    if (err) return callback(err);
+
+    callback(null, results[0]);
+  });
+};
+
+
 module.exports = {
   createTeacherTable,
   addTeacher,
   getAllTeachers,
   getTeacherById,
+  getTeacherByEmail
 };
