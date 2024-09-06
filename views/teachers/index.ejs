@@ -13,7 +13,7 @@
   <div id="loading" style="display: block;">Loading...</div>
   <div id="resultMessage"></div>
 
-
+  <h2 id="email"></h2>
 
 
 
@@ -23,6 +23,7 @@
 
     window.addEventListener('load', async () => {
       const root = document.getElementById('root')
+      const emailElement = document.getElementById('email')
 
       const loading = document.getElementById('loading');
       const resultMessage = document.getElementById('resultMessage');
@@ -33,10 +34,11 @@
       console.log(token)
       // if there is no token 
       if (!token) {
-        resultMessage.textContent = 'You are not logged in. Please log in to access this route.';
+        resultMessage.textContent = 'there is no token';
         loading.style.display = 'none';
         return;
       }
+
 
       try {
 
@@ -45,20 +47,23 @@
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            "Authorization": token
-          },
+            'Authorization': `Bearer ${token}`
+          }
 
         });
 
 
         const responseData = await response.json()
-
+        console.log(responseData)
         if (responseData.error) {
           throw new Error(responseData.message || 'Server error');
         }
 
 
+        // append data to html
 
+
+        emailElement.textContent = responseData.teacher.email
 
       } catch (error) {
         console.log('Error:', error);

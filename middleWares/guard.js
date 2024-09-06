@@ -15,7 +15,6 @@ exports.protect = expressAsyncHandler(async (req, res, next) => {
         token = req.headers.authorization.split(' ')[1]
     }
 
-    console.log(token)
     if (!token) {
         return next(new ApiError('you are not login , plase login to get access  this route', 400))
     }
@@ -31,6 +30,7 @@ exports.protect = expressAsyncHandler(async (req, res, next) => {
             else resolve(resulte);
         });
     });
+
 
 
 
