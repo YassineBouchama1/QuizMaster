@@ -14,13 +14,23 @@ const createToken = (payload) => jwt.sign({ userId: payload }, JWT_SECRET)
 
 
 
+//----------------------------------1= load pages html----------------------------------
 
+// show page to login page for teacher
+exports.loginTeacherForm = (req, res) => res.render('auth/login')
 // show page to signup page for teacher
 exports.signUpTeacherForm = (req, res) => res.render('auth/signUp');
 
 
 
-// create a new teacher
+
+
+
+// ---------------------------2=apis------------------------
+
+// @DESC signup new user
+// @ROUTE POST auth/signup
+// @DACCESS Poulic
 exports.signUpTeacherApi = expressAsyncHandler(async (req, res, next) => {
     const { firstName, lastName, email, password } = req.body;
 
@@ -47,12 +57,11 @@ exports.signUpTeacherApi = expressAsyncHandler(async (req, res, next) => {
     }
 });
 
-// show page to login page for teacher
-exports.loginTeacherForm = (req, res) => res.render('auth/login')
 
 
-
-
+// @DESC login user
+// @ROUTE POST auth/login
+// @DACCESS Poulic
 exports.loginTeacherApi = expressAsyncHandler(async (req, res, next) => {
     const { email, password } = req.body;
 
