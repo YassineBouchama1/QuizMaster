@@ -2,24 +2,76 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teachers List</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teachers List</title>
 </head>
 
-<body>
-    <h1>Teachers List</h1>
-    <% if (teachers && teachers.length> 0) { %>
-        <ul>
-            <% teachers.forEach(function(teacher) { %>
-                <li>
-                    <%= teacher.firstName %>
-                </li>
-                <% }); %>
-        </ul>
-        <% } else { %>
-            <p>No teachers found.</p>
-            <% } %>
+<body id="root">
+  <h1>Teachers Dashboard</h1>
+
+  <div id="loading" style="display: block;">Loading...</div>
+  <div id="resultMessage"></div>
+
+
+
+
+
+  <script>
+
+
+
+    window.addEventListener('load', async () => {
+      const root = document.getElementById('root')
+
+      const loading = document.getElementById('loading');
+      const resultMessage = document.getElementById('resultMessage');
+      resultMessage.textContent = '';
+      //get token from localhost
+      const token = localStorage.getItem('token') || null
+
+      console.log(token)
+      // if there is no token 
+      if (!token) {
+        resultMessage.textContent = 'You are not logged in. Please log in to access this route.';
+        loading.style.display = 'none';
+        return;
+      }
+
+      try {
+
+        //fetch data
+        const response = await fetch('/teachers/me', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            "Authorization": token
+          },
+
+        });
+
+
+        const responseData = await response.json()
+
+        if (responseData.error) {
+          throw new Error(responseData.message || 'Server error');
+        }
+
+
+
+
+      } catch (error) {
+        console.log('Error:', error);
+        resultMessage.textContent = `Error: ${error.message}`;
+      } finally {
+        // disable loading
+        loading.style.display = 'none';
+      }
+
+
+
+    })
+  </script>
 </body>
 
 </html>
