@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teachers</title>
+</head>
+<body>
+  <h1>Teachers List</h1>
+  <a href="/teachers/create">Create New Teacher</a>
+  <ul>
+    <% teachers.forEach(teacher => { %>
+      <li>
+        <a href="/teachers/<%= teacher.id %>"><%= teacher.name %> - <%= teacher.email %></a>
+        <a href="/teachers/<%= teacher.id %>/edit">Edit</a>
+        <form action="/teachers/<%= teacher.id %>?_method=DELETE" method="POST" style="display:inline;">
+          <button type="submit">Delete</button>
+        </form>
+      </li>
+    <% }) %>
+  </ul>
+</body>
+</html>

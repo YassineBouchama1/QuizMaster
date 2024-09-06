@@ -1,4 +1,5 @@
 const mysql = require('mysql2');
+const teacherModel = require('../models/teacher');
 require('dotenv').config();
 
 
@@ -16,6 +17,9 @@ connection.connect((err) => {
         return;
     }
     console.log('Connected to the database');
+
+    // initialize tables after conected db
+    // teacherModel.createTeacherTable();
 });
 
 module.exports = connection;

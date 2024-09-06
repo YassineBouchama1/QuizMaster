@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
-const indexRouter = require('./routes/index');
-const quizRoute = require('./routes/quizRoute');
+const teacherRouter = require('./routes/teacherRoute');
+
 const ApiError = require('./utils/ApiError');
 const bodyParser = require('body-parser');
 
@@ -24,15 +24,28 @@ app.use(bodyParser.json());
 
 // Handle 404 errors : not found page
 app.all('*', (req, res, next) => {
-  next(new ApiError(`Can't find this url ${req.originalUrl}`, 404));
+  // next(new ApiError(`Can't find this url ${req.originalUrl}`, 404));
+
+  res.render('not-found')
 });
 
 
 // Routes 
-app.use('/api/v1/', indexRouter);
-app.use('/api/v1/quiz', quizRoute);
+app.use('/teachers', teacherRouter);
 
 
+
+
+// Global error handler
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || 'Internal Server Error';
+  res.status(statusCode).json({
+    status: 'error',
+    statusCode,
+    message,
+  });
+});
 
 
 
