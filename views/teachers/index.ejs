@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teachers List</title>
+</head>
+
+<body>
+    <h1>Teachers List</h1>
+    <% if (teachers && teachers.length> 0) { %>
+        <ul>
+            <% teachers.forEach(function(teacher) { %>
+                <li>
+                    <%= teacher.name %>
+                </li>
+                <% }); %>
+        </ul>
+        <% } else { %>
+            <p>No teachers found.</p>
+            <% } %>
+</body>
+
+</html>

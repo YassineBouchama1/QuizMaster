@@ -1,12 +1,16 @@
 const db = require('../config/database');
 
-// create the teachers table if it doesnt exist
+// create the teachers table if it doesn't exist
 const createTeacherTable = () => {
+
+  console.log('hello world')
   const sql = `
     CREATE TABLE IF NOT EXISTS teachers (
       id INT AUTO_INCREMENT PRIMARY KEY,
-      name VARCHAR(255) NOT NULL,
+      firstName VARCHAR(255) NOT NULL,
+      lastName VARCHAR(255) NOT NULL,
       email VARCHAR(255) NOT NULL UNIQUE,
+      password VARCHAR(255) NOT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
   `;
@@ -16,13 +20,10 @@ const createTeacherTable = () => {
   });
 };
 
-
-
-
 // add a new teacher
-const addTeacher = (name, email, callback) => {
-  const sql = 'INSERT INTO teachers (name, email) VALUES (?, ?)';
-  db.query(sql, [name, email], (err, results) => {
+const addTeacher = (firstName, lastName, email, password, callback) => {
+  const sql = 'INSERT INTO teachers (firstName, lastName, email, password) VALUES (?, ?, ?, ?)';
+  db.query(sql, [firstName, lastName, email, password], (err, results) => {
     if (err) return callback(err);
     callback(null, results);
   });
@@ -46,11 +47,9 @@ const getTeacherById = (id, callback) => {
   });
 };
 
-
 module.exports = {
   createTeacherTable,
   addTeacher,
   getAllTeachers,
   getTeacherById,
-
 };

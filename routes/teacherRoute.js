@@ -1,19 +1,21 @@
 const express = require('express');
 const {
   createTeacherForm,
-  createTeacher,
+
   getAllTeachers,
   getTeacherById,
+  createTeacherApi,
 } = require('../controllers/teacherController');
 
 const router = express.Router();
 
 router.route('/')
   .get(getAllTeachers)
-  .post(createTeacher);
+
 
 router.route('/create')
-  .get(createTeacherForm);
+  .get(createTeacherForm)
+  .post(createTeacherApi);
 
 router.route('/:id')
   .get(getTeacherById)
