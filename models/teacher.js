@@ -2,9 +2,9 @@ const db = require('../config/database');
 
 
 // add a new teacher
-const addTeacher = (firstName, lastName, email, password, callback) => {
-  const sql = 'INSERT INTO teachers (firstName, lastName, email, password) VALUES (?, ?, ?, ?)';
-  db.query(sql, [firstName, lastName, email, password], (err, results) => {
+const addTeacher = (firstName, lastName, email, password, speciality, callback) => {
+  const sql = 'INSERT INTO teachers (firstName, lastName,speciality, email, password) VALUES (?, ?, ?, ?, ?)';
+  db.query(sql, [firstName, lastName, speciality, email, password], (err, results) => {
     if (err) return callback(err);
     callback(null, results);
   });

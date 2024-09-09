@@ -32,11 +32,11 @@ exports.signUpTeacherForm = (req, res) => res.render('auth/signUp');
 // @ROUTE POST auth/signup
 // @DACCESS Poulic
 exports.signUpTeacherApi = expressAsyncHandler(async (req, res, next) => {
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, password, speciality } = req.body;
 
 
     // validation
-    if (!firstName || !email || !password || !lastName) {
+    if (!firstName || !email || !password || !lastName, !speciality) {
         return next(new ApiError('some fileds missing they are required', 400));
     }
 
@@ -46,7 +46,7 @@ exports.signUpTeacherApi = expressAsyncHandler(async (req, res, next) => {
 
     try {
         await new Promise((resolve, reject) => {
-            teacherModel.addTeacher(firstName, lastName, email, cryptedPassowrd, (err) => {
+            teacherModel.addTeacher(firstName, lastName, email, cryptedPassowrd, speciality, (err) => {
                 if (err) reject(err);
                 else resolve();
             });

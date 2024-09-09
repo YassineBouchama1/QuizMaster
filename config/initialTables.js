@@ -21,10 +21,25 @@ CREATE TABLE IF NOT EXISTS quizzes (
   title VARCHAR(255) NOT NULL,
   description TEXT,
   teacher_id INT,
+    viewAnswers BOOLEAN DEFAULT FALSE,
+  seeResult BOOLEAN DEFAULT FALSE,
+  successScore FLOAT DEFAULT 0.0,
   status ENUM('draft', 'published', 'archived') DEFAULT 'draft',
   deleted_at TIMESTAMP NULL DEFAULT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (teacher_id) REFERENCES teachers(id) ON DELETE SET NULL
+);
+`,
+,
+  `
+CREATE TABLE IF NOT EXISTS questions (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  text VARCHAR(255) NOT NULL,
+  quiz_id INT,
+  numberOfPoints FLOAT DEFAULT 0.0,
+  deleted_at TIMESTAMP NULL DEFAULT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE SET NULL
 );
 `,
   `
@@ -34,7 +49,7 @@ CREATE TABLE IF NOT EXISTS quizzes (
        teacher_id INT,
       status ENUM('active', 'suspended') DEFAULT 'active',
       deleted_at TIMESTAMP NULL DEFAULT NULL,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
      FOREIGN KEY (teacher_id) REFERENCES teachers(id) ON DELETE SET NULL
     );
     `,
@@ -48,9 +63,9 @@ CREATE TABLE IF NOT EXISTS quizzes (
           role ENUM('student') DEFAULT 'student',
           class_id INT,
           deleted_at TIMESTAMP NULL DEFAULT NULL,
-          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
           FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE SET NULL
 
         );
-        `,
+        `
 ];
