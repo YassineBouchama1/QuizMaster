@@ -2,6 +2,9 @@ const express = require('express');
 const path = require('path');
 const teacherRouter = require('./routes/teacherRoute');
 
+const studentRouter = require('./routes/studentRoute');
+const testRouter = require('./routes/index');
+
 const authRouter = require('./routes/authRoute');
 const guestRouter = require('./routes/guestRoute');
 const quizRouter = require('./routes/quizRoute');
@@ -27,6 +30,7 @@ app.set('view engine', 'ejs');
 
 // Routes
 app.use('/teachers', teacherRouter);
+app.use('/allQuiz', studentRouter);
 app.use('/auth', authRouter);
 app.use('/quiz', quizRouter);
 app.use('/class', classRouter);
