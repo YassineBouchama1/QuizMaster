@@ -3,8 +3,12 @@ const db = require('../config/database');
 // add a new quiz
 const addQuiz = (title, description, teacher_id, viewAnswers, seeResult, successScore, status, callback) => {
   const sql = 'INSERT INTO quizzes (title, description, teacher_id, viewAnswers, seeResult, successScore, status) VALUES (?, ?, ?, ?, ?, ?, ?)';
+
   db.query(sql, [title, description, teacher_id, viewAnswers, seeResult, successScore, status], (err, results) => {
-    if (err) return callback(err);
+    if (err) {
+      console.error('Error:', err.message);
+      return callback(err);
+    }
     callback(null, results);
   });
 };
