@@ -2,8 +2,6 @@ const express = require('express');
 const path = require('path');
 const teacherRouter = require('./routes/teacherRoute');
 
-const studentRouter = require('./routes/studentRoute');
-const testRouter = require('./routes/index');
 
 const authRouter = require('./routes/authRoute');
 const guestRouter = require('./routes/guestRoute');
