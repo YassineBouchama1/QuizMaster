@@ -4,7 +4,6 @@ const {
 
   dashboardTeacher,
   getTeacher,
-
 } = require('../controllers/teacherController');
 const { protect } = require('../middleWares/guard');
 
