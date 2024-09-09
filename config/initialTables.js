@@ -42,6 +42,17 @@ exports.Tables = [
       FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE SET NULL
   );
   `,
+  ,
+  `
+  CREATE TABLE IF NOT EXISTS answers (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      text VARCHAR(255) NOT NULL,
+      question_id INT,
+      deleted_at TIMESTAMP NULL DEFAULT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (question_id) REFERENCES questions(id) ON DELETE SET NULL
+  );
+  `,
   `
   CREATE TABLE IF NOT EXISTS classes (
       id INT AUTO_INCREMENT PRIMARY KEY,
@@ -69,3 +80,4 @@ exports.Tables = [
   );
   `
 ];
+

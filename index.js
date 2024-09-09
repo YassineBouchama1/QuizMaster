@@ -28,6 +28,7 @@ app.set('view engine', 'ejs');
 app.use('/teachers', teacherRouter);
 app.use('/auth', authRouter);
 app.use('/quiz', quizRouter);
+app.use('/quiz', quizRouter);
 
 app.use('/', guestRouter); /// this for public routes: home page ....
 

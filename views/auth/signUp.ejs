@@ -12,6 +12,7 @@
   <form id="signUpForm">
     <input type="text" name="firstName" required>
     <input type="text" name="lastName" required>
+    <input type="text" name="speciality" required>
     <input type="email" name="email" required>
     <input type="password" name="password" required>
     <button type="submit">Create Teacher</button>
@@ -60,7 +61,7 @@
         const responseData = await response.json();
 
         if (!response.ok) {
-          throw new Error(data.message || 'Server error');
+          throw new Error(responseData.message || 'Server error');
         }
 
         if (responseData.success) {
