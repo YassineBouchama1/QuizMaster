@@ -1,23 +1,115 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<!doctype html>
+<html class="no-js " lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz App</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+	<link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
 </head>
+<body>  
 
-<body>
-    <h1></h1>
+    <div id="preloader">
+        <img class="preloader" src="images/loader.gif" alt="">
+    </div>
 
-    <h2>
-        test page
-    </h2>
+    <div id="wrapper">
+        <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div id="div-forms">
+                        <form id="login-form">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span class="flaticon-add" aria-hidden="true"></span>
+                            </button>
+                            <div class="modal-body">
+                                <input class="form-control" type="text" placeholder="What you are looking for?" required>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <header class="header">
+            <div class="topbar clearfix">
+                
+            </div>
+
+            <div class="container">
+                <nav class="navbar navbar-default yamm">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <div class="logo-normal">
+                            <a class="navbar-brand" href="/home"><img src="images/Group 33565.png" alt=""></a>
+                        </div>
+                    </div>
+
+                    <div id="navbar" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="/">Home</a></li>
+                            <li><a href="/auth/signup">Register</a></li>
+                            <li><a href="/auth/login">Log In</a></li>
+
+                           
+                            
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </header>
+
+        <section id="home" class="video-section js-height-full">
+            <div class="overlay"></div>
+            <div class="home-text-wrapper relative container">
+                <div class="home-message">
+                    <p>Welcome to Js Smart Exam</p>
+                    <small>Empowering students and professors with seamless JavaScript test management. Easily take and manage tests, track progress, and communicate effectively—all through a secure and intuitive platform.</small>
+                    <div class="btn-wrapper">
+                        <div class="text-center">
+                            <a href="/auth/signup" class="btn btn-primary wow slideInLeft">Join</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+        </section>
 
 
+    
 
-    <script src="/js/main.js"></script>
+        <div class="copyrights">
+            <div class="container">
+                <div class="clearfix">
+                    <div class="pull-left">
+                        <div class="cop-logo">
+                            <a href="/home"><img src="images/Group 33565.png" alt=""></a>
+                        </div>
+                    </div>
+
+                    <div class="pull-right">
+                        <div class="footer-links">
+                            <ul class="list-inline">
+                                <li>Js Pirates</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="jsf/jquery.min.js"></script>
+    <script src="jsf/bootstrap.min.js"></script>
+    <script src="jsf/custom.js"></script>
+
 </body>
-
 </html>

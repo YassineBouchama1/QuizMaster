@@ -3,6 +3,7 @@ const path = require('path');
 const teacherRouter = require('./routes/teacherRoute');
 const testRouter = require('./routes/index');
 const authRouter = require('./routes/authRoute');
+const homeRouter = require('./routes/homeRouter');
 const ApiError = require('./utils/ApiError');
 const globalError = require('./middleWares/globalError')
 
@@ -26,6 +27,8 @@ app.set('view engine', 'ejs');
 app.use('/teachers', teacherRouter);
 app.use('/auth', authRouter);
 app.use('/test', testRouter);
+app.use('/home', homeRouter);
+
 
 // Handle 404 errors: not found page
 app.use('*', (req, res, next) => {

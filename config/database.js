@@ -19,7 +19,7 @@ connection.connect((err) => {
     // unitialize tables after connecting to db
 
 
-    console.log('syart creating tables')
+    console.log(' creating tables')
     const sql = `
           CREATE TABLE IF NOT EXISTS teachers (
             id INT AUTO_INCREMENT PRIMARY KEY,

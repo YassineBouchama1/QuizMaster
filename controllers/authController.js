@@ -78,6 +78,7 @@ exports.loginTeacherApi = expressAsyncHandler(async (req, res, next) => {
             teacherModel.getTeacherByEmail(email, (err, resulte) => {
                 if (err) reject(err); // if there is error send it to catch 
                 else resolve(resulte);
+                
             });
         });
 

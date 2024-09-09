@@ -2,21 +2,43 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Create Teacher</title>
-</head>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/Auth.css">
+   
+  </head>
 
 <body>
-    <h1>Create New Teacher</h1>
-    <form id="loginForm">
+        <div class="background">
+          <div class="shape"></div>
+          <div class="shape"></div>
+        </div>
+        <form id="loginForm">
+          <h3>Have An Account</h3>
+    
+          
+          <label for="email">Email</label>
+          <input type="text" placeholder="email" id="email" name="email" required />
+    
 
-        <input type="email" name="email" required>
-        <input type="password" name="password" required>
-        <button type="submit">login as Teacher</button>
-    </form>
-    <div id="loadingIndicator" style="display: none;">Creating teacher...</div>
-    <div id="resultMessage"></div>
+          <label for="password">Password</label>
+          <input type="text" placeholder="password" id="password" name="password" required />
+    
+
+          <button type="submit">Log In</button>
+        </form>
+        <div id="loadingIndicator" style="display: none">Creating teacher...</div>
+        <div id="resultMessage"></div>
 
     <script>
 
