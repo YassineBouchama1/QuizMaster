@@ -1,21 +1,20 @@
 const express = require('express');
-const {
 
-
-  dashboardTeacher,
-  getTeacher,
-} = require('../controllers/teacherController');
-const { protect } = require('../middleWares/guard');
+const { protect } = require('../middlewares/guard');
+const { createClass, classForm, assignStudentsToClass } = require('../controllers/classController');
 
 const router = express.Router();
 
-router.route('/')
-  .get(dashboardTeacher)
+router.route('/create')
+  .get(classForm)
 
 
 
-router.route('/me')
-  .get(protect, getTeacher)
+router.route('/create')
+  .post(protect, createClass)
+
+router.route('/asign')
+  .post(protect, assignStudentsToClass)
 
 module.exports = router;
 

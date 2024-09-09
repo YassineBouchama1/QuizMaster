@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create class</title>
+</head>
+
+<body>
+    <h1>Create New Class</h1>
+    <form id="classForm">
+        <input type="text" name="name" required>
+
+        <button type="submit">Create class</button>
+    </form>
+    <div id="loadingIndicator" style="display: none;">Creating class...</div>
+    <div id="resultMessage"></div>
+
+    <script>
+
+        const classForm = document.getElementById('classForm')
+
+        classForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const form = this;
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const resultMessage = document.getElementById('resultMessage');
+            const submitButton = form.querySelector('button[type="submit"]');
+
+            // Show loadingand disable btn submit
+            loadingIndicator.style.display = 'block';
+            resultMessage.textContent = '';
+            submitButton.disabled = true;
+
+            // get token from localStorage
+            const token = localStorage.getItem('token') || null;
+
+            // if there is no token
+            if (!token) {
+                resultMessage.textContent = 'There is no token';
+                loadingIndicator.style.display = 'none';
+                return;
+            }
+
+            try {
+                // collecst data from  FORM
+                const formData = new FormData(form);
+                const data = {};
+
+                formData.forEach((value, key) => {
+                    data[key] = value;
+                });
+
+
+
+                // Send request to api 
+                const response = await fetch('/class/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const responseData = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(responseData.message || 'Server error');
+                }
+
+                if (responseData.success) {
+                    resultMessage.textContent = responseData.message;
+                    form.reset(); // clear the form
+                } else {
+                    throw new Error(responseData.message || 'Unknown error occurred');
+                }
+            } catch (error) {
+                console.log('Error:', error);
+                resultMessage.textContent = `Error: ${error.message}`;
+            } finally {
+                // hide loading re enable submit btn
+                loadingIndicator.style.display = 'none';
+                submitButton.disabled = false;
+            }
+        });
+    </script>
+</body>
+
+</html>

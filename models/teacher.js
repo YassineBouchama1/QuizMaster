@@ -1,15 +1,6 @@
 const db = require('../config/database');
 
 
-// add a new teacher
-const addTeacher = (firstName, lastName, email, password, speciality, callback) => {
-  const sql = 'INSERT INTO teachers (firstName, lastName,speciality, email, password) VALUES (?, ?, ?, ?, ?)';
-  db.query(sql, [firstName, lastName, speciality, email, password], (err, results) => {
-    if (err) return callback(err);
-    callback(null, results);
-  });
-};
-
 // get all teachers
 const getAllTeachers = (callback) => {
   const sql = 'SELECT * FROM teachers';
@@ -41,7 +32,7 @@ const getTeacherByEmail = (email, callback) => {
 
 module.exports = {
 
-  addTeacher,
+
   getAllTeachers,
   getTeacherById,
   getTeacherByEmail

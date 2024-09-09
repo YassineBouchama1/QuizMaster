@@ -39,10 +39,10 @@ exports.Tables = [
       numberOfPoints FLOAT DEFAULT 0.0,
       deleted_at TIMESTAMP NULL DEFAULT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE SET NULL
+          FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE CASCADE
   );
   `,
-  ,
+
   `
   CREATE TABLE IF NOT EXISTS answers (
       id INT AUTO_INCREMENT PRIMARY KEY,
@@ -50,13 +50,13 @@ exports.Tables = [
       question_id INT,
       deleted_at TIMESTAMP NULL DEFAULT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (question_id) REFERENCES questions(id) ON DELETE SET NULL
+      FOREIGN KEY (question_id) REFERENCES questions(id) ON DELETE CASCADE
   );
   `,
   `
   CREATE TABLE IF NOT EXISTS classes (
       id INT AUTO_INCREMENT PRIMARY KEY,
-      name VARCHAR(255) NOT NULL,
+      name VARCHAR(255) NOT NULL UNIQUE,
       teacher_id INT,
       status ENUM('active', 'suspended') DEFAULT 'active',
       deleted_at TIMESTAMP NULL DEFAULT NULL,

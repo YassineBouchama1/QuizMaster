@@ -1,10 +1,11 @@
 const expressAsyncHandler = require('express-async-handler');
-const teacherModel = require('../models/teacher');
+const classModel = require('../models/classModel');
 const ApiError = require('../utils/ApiError');
 
 
 // @DESC :render pages html 
-exports.dashboardTeacher = (req, res) => res.render('teachers/index')
+exports.classForm = (req, res) => res.render('teachers/classes/create')
+exports.assignForm = (req, res) => res.render('teachers/classes/assign')
 
 
 
@@ -12,27 +13,31 @@ exports.dashboardTeacher = (req, res) => res.render('teachers/index')
 // @ROUTE POST teachers/
 // @ACCESS Privet
 // render teacher page
-exports.getTeacher = expressAsyncHandler(async (req, res, next) => {
+exports.createClass = expressAsyncHandler(async (req, res, next) => {
 
 
 
     const { id } = req.user;
 
+    // simple validation
+    if (!id || !req.body.name) {
+        return next(new ApiError('filed is missing ', 400));
+    }
+
+
     try {
 
-        //  fecth texhcer from db useing id
-        const teacher = await new Promise((resolve, reject) => {
-            teacherModel.getTeacherById(id, (err, resulte) => {
-                if (err) reject(err); // if there is error send it to catch 
-                else resolve(resulte);
-            });
+        const classCreated = await classModel.inserClass(req.body.name, id)
+
+
+        res.status(201).json({
+            success: true,
+            message: 'Class created successfully',
+            result: classCreated
         });
 
-        console.log(teacher)
-        res.status(200).json({ teacher: teacher })
-
     } catch (error) {
-        return next(new ApiError(`Error fetching teacher: ${error.message}`, 500));
+        return next(new ApiError(`Error fetching class: ${error.message}`, 500));
     }
 
 });
@@ -40,3 +45,28 @@ exports.getTeacher = expressAsyncHandler(async (req, res, next) => {
 
 
 
+
+exports.assignStudentsToClass = expressAsyncHandler(async (req, res, next) => {
+    const { classId, studentIds } = req.body;
+
+
+    // simple validation
+    if (!Array.isArray(questions) || questions.length === 0) {
+        return next(new ApiError('At least one student is required', 400));
+    }
+    try {
+
+        const isAssigned = await classModel.assignStudentsToClass(classId, studentIds)
+        res.status(201).json({
+            success: true,
+            message: 'Assigned successfully',
+            result: isAssigned
+        });
+
+    } catch (error) {
+        return next(new ApiError(`Error assigning students: ${error.message}`, 500));
+
+    }
+
+
+})
