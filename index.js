@@ -8,6 +8,7 @@ const guestRouter = require('./routes/guestRoute');
 const quizRouter = require('./routes/quizRoute');
 const classRouter = require('./routes/classRoute');
 const studentRouter = require('./routes/studentRoute')
+const homeRouter = require('./routes/homeRouter');
 const ApiError = require('./utils/ApiError');
 const globalError = require('./middlewares/globalError')
 
@@ -36,6 +37,9 @@ app.use('/class', classRouter);
 
 
 app.use('/', guestRouter); /// this for public routes: home page ....
+app.use('/test', testRouter);
+app.use('/home', homeRouter);
+
 
 // Handle 404 errors: not found page
 app.use('*', (req, res, next) => {

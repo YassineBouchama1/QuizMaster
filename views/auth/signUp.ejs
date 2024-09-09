@@ -1,85 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Teacher</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/Auth.css">
+   
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Create Teacher</title>
-</head>
+  <body>
+    <div class="background">
+      <div class="shape"></div>
+      <div class="shape"></div>
+    </div>
+    <form id="signUpForm">
+      <h3>Create New Teacher</h3>
 
-<body>
-  <h1>Create New Teacher</h1>
-  <form id="signUpForm">
-    <input type="text" name="firstName" required>
-    <input type="text" name="lastName" required>
-    <input type="text" name="speciality" required>
-    <input type="email" name="email" required>
-    <input type="password" name="password" required>
-    <button type="submit">Create Teacher</button>
-  </form>
-  <div id="loadingIndicator" style="display: none;">Creating teacher...</div>
-  <div id="resultMessage"></div>
+      <div class="form-row">
+        <div>
+          <label for="lastName">Last Name</label>
+          <input
+            type="text"
+            placeholder="Last Name"
+            id="lastName"
+            name="lastName"
+            required
+          />
+        </div>
+        <div>
+          <label for="firstName">First Name</label>
+          <input
+            type="text"
+            placeholder="First Name"
+            id="firstName"
+            name="firstName"
+            required
+          />
+        </div>
+      </div>
 
-  <script>
+      <div class="form-row">
+        <div>
+          <label for="email">Email</label>
+          <input
+            type="email"
+            placeholder="Email"
+            id="email"
+            name="email"
+            required
+          />
+        </div>
 
-    const signUpForm = document.getElementById('signUpForm')
+        <div>
+          <label for="password">Password</label>
+          <input
+            type="password"
+            placeholder="Password"
+            id="password"
+            name="password"
+            required
+          />
+        </div>
+      </div>
 
-    signUpForm.addEventListener('submit', async function (e) {
-      e.preventDefault();
+      <label for="role">Role</label>
+      <input type="text" placeholder="Role" id="role" name="role" required />
 
-      const form = this;
-      const loadingIndicator = document.getElementById('loadingIndicator');
-      const resultMessage = document.getElementById('resultMessage');
-      const submitButton = form.querySelector('button[type="submit"]');
+      <button type="submit">Create Teacher</button>
+    </form>
+    <div id="loadingIndicator" style="display: none">Creating teacher...</div>
+    <div id="resultMessage"></div>
 
-      // Show loadingand disable btn submit
-      loadingIndicator.style.display = 'block';
-      resultMessage.textContent = '';
-      submitButton.disabled = true;
+    <script>
+      const signUpForm = document.getElementById("signUpForm");
 
+      signUpForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
 
-      try {
-        // collecst data from  FORM
-        const formData = new FormData(form);
-        const data = {};
+        const form = this;
+        const loadingIndicator = document.getElementById("loadingIndicator");
+        const resultMessage = document.getElementById("resultMessage");
+        const submitButton = form.querySelector('button[type="submit"]');
 
-        formData.forEach((value, key) => {
-          data[key] = value;
-        });
+        // Show loadingand disable btn submit
+        loadingIndicator.style.display = "block";
+        resultMessage.textContent = "";
+        submitButton.disabled = true;
 
+        try {
+          // collecst data from  FORM
+          const formData = new FormData(form);
+          const data = {};
 
+          formData.forEach((value, key) => {
+            data[key] = value;
+          });
 
-        // Send request to api 
-        const response = await fetch('/auth/signUp', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data)
-        });
+          // Send request to api
+          const response = await fetch("/auth/signUp", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
 
-        const responseData = await response.json();
+          const responseData = await response.json();
 
-        if (!response.ok) {
-          throw new Error(responseData.message || 'Server error');
+          if (!response.ok) {
+            throw new Error(responseData.message || "Server error");
+          }
+
+          console.log(responseData);
+
+          if (responseData.success) {
+            resultMessage.textContent = responseData.message;
+            form.reset(); // clear the form
+          } else {
+            throw new Error(responseData.message || "Unknown error occurred");
+          }
+        } catch (error) {
+          console.log("Error:", error);
+          resultMessage.textContent = `Error: ${error.message}`;
+        } finally {
+          // hide loading re enable submit btn
+          loadingIndicator.style.display = "none";
+          submitButton.disabled = false;
         }
+      });
 
-        if (responseData.success) {
-          resultMessage.textContent = responseData.message;
-          form.reset(); // clear the form
-        } else {
-          throw new Error(responseData.message || 'Unknown error occurred');
-        }
-      } catch (error) {
-        console.log('Error:', error);
-        resultMessage.textContent = `Error: ${error.message}`;
-      } finally {
-        // hide loading re enable submit btn
-        loadingIndicator.style.display = 'none';
-        submitButton.disabled = false;
-      }
-    });
-  </script>
-</body>
 
+    </script>
+  </body>
 </html>
