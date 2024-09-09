@@ -66,17 +66,17 @@ exports.Tables = [
   `,
   `
   CREATE TABLE IF NOT EXISTS students (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      firstName VARCHAR(255) NOT NULL,
-      lastName VARCHAR(255) NOT NULL,
-      email VARCHAR(255) NOT NULL UNIQUE,
-      password VARCHAR(255) NOT NULL,
-      status ENUM('active', 'suspended') DEFAULT 'active',
-      role ENUM('student') DEFAULT 'student',
-      class_id INT,
-      deleted_at TIMESTAMP NULL DEFAULT NULL,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE SET NULL
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    firstName VARCHAR(255) NOT NULL,
+    lastName VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    status ENUM('active', 'suspended') DEFAULT 'active',
+    role ENUM('student') DEFAULT 'student',
+    class_id INT NULL, 
+    deleted_at TIMESTAMP NULL DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE SET NULL
   );
   `
 ];

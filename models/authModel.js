@@ -13,7 +13,7 @@ const addTeacher = (firstName, lastName, email, password, speciality, callback) 
 
 // add a new teacher
 const addStudent = (firstName, lastName, email, password, callback) => {
-    const sql = 'INSERT INTO students (firstName, lastName, email, password) VALUES (?, ?, ?, ?, ?)';
+    const sql = 'INSERT INTO students (firstName, lastName, email, password) VALUES (?, ?, ?, ?)';
     db.query(sql, [firstName, lastName, email, password], (err, results) => {
         if (err) return callback(err);
         callback(null, results);

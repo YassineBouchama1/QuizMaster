@@ -37,10 +37,13 @@ exports.signUpTeacherApi = expressAsyncHandler(async (req, res, next) => {
 
 
     // validation
-    if (!firstName || !email || !password || !lastName, !(role && !speciality)) {
+    if (!firstName || !email || !password || !lastName) {
         return next(new ApiError('some fileds missing they are required', 400));
     }
 
+    if (role === 'teacher' && !speciality) {
+        return next(new ApiError('Speciality is required for teachers', 400));
+    }
 
     try {
         //  check if email exists in either students or teachers
@@ -51,6 +54,8 @@ exports.signUpTeacherApi = expressAsyncHandler(async (req, res, next) => {
             });
         });
 
+
+        console.log(existingUser)
         if (existingUser) {
             return next(new ApiError('Email already existsin use', 400));
         }
@@ -69,7 +74,7 @@ exports.signUpTeacherApi = expressAsyncHandler(async (req, res, next) => {
                     else resolve();
                 });
             });
-            res.status(201).json({ success: true, message: 'Teacher created successfully' });
+            res.status(201).json({ success: true, message: 'Student created successfully' });
         }
 
 
@@ -89,7 +94,7 @@ exports.signUpTeacherApi = expressAsyncHandler(async (req, res, next) => {
         }
 
     } catch (error) {
-        next(new ApiError(`Error creating teacher: ${error.message}`, 500));
+        next(new ApiError(`Error signup : ${error.message}`, 500));
     }
 });
 

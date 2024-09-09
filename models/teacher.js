@@ -19,6 +19,7 @@ const getTeacherById = (id, callback) => {
   });
 };
 
+
 const getTeacherByEmail = (email, callback) => {
   // console.log('inside getTeacherByEmail')
   const sql = 'SELECT * FROM teachers WHERE email = ?';
