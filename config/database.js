@@ -1,5 +1,6 @@
 const mysql = require('mysql2');
-const teacherModel = require('../models/teacher');
+const { Tables } = require('./initialTables');
+
 require('dotenv').config();
 
 const connection = mysql.createConnection({
@@ -17,23 +18,14 @@ connection.connect((err) => {
     console.log('Connected to the database');
 
     // unitialize tables after connecting to db
+    Tables.forEach((table, i) => {
+        connection.query(table, (err) => {
+            if (err) throw err;
+            console.log(`${i}=table created or already exists`);
+        });
+    })
 
 
-    console.log('syart creating tables')
-    const sql = `
-          CREATE TABLE IF NOT EXISTS teachers (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            firstName VARCHAR(255) NOT NULL,
-            lastName VARCHAR(255) NOT NULL,
-            email VARCHAR(255) NOT NULL UNIQUE,
-            password VARCHAR(255) NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-          );
-        `;
-    connection.query(sql, (err) => {
-        if (err) throw err;
-        console.log('Teachers table created or already exists');
-    });
 
 
 });

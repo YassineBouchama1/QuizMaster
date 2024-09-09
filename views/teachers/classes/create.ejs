@@ -4,28 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Teacher</title>
+    <title>Create class</title>
 </head>
 
 <body>
-    <h1>Create New Teacher</h1>
-    <form id="loginForm">
+    <h1>Create New Class</h1>
+    <form id="classForm">
+        <input type="text" name="name" required>
 
-        <input type="email" name="email" required>
-        <input type="password" name="password" required>
-        <button type="submit">login as Teacher</button>
+        <button type="submit">Create class</button>
     </form>
-    <div id="loadingIndicator" style="display: none;">Creating teacher...</div>
+    <div id="loadingIndicator" style="display: none;">Creating class...</div>
     <div id="resultMessage"></div>
 
     <script>
 
+        const classForm = document.getElementById('classForm')
 
-        const signUpForm = document.getElementById('loginForm')
-
-        signUpForm.addEventListener('submit', async function (e) {
+        classForm.addEventListener('submit', async function (e) {
             e.preventDefault();
-            console.log('hello')
+
             const form = this;
             const loadingIndicator = document.getElementById('loadingIndicator');
             const resultMessage = document.getElementById('resultMessage');
@@ -35,6 +33,16 @@
             loadingIndicator.style.display = 'block';
             resultMessage.textContent = '';
             submitButton.disabled = true;
+
+            // get token from localStorage
+            const token = localStorage.getItem('token') || null;
+
+            // if there is no token
+            if (!token) {
+                resultMessage.textContent = 'There is no token';
+                loadingIndicator.style.display = 'none';
+                return;
+            }
 
             try {
                 // collecst data from  FORM
@@ -46,31 +54,27 @@
                 });
 
 
-                console.log(data)
+
                 // Send request to api 
-                const response = await fetch('/auth/login', {
+                const response = await fetch('/class/create', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+
                     },
                     body: JSON.stringify(data)
                 });
 
                 const responseData = await response.json();
 
-
                 if (!response.ok) {
                     throw new Error(responseData.message || 'Server error');
                 }
 
                 if (responseData.success) {
-                    localStorage.setItem('token', responseData.token)
-
                     resultMessage.textContent = responseData.message;
                     form.reset(); // clear the form
-
-                    window.location.replace('/teachers');
-
                 } else {
                     throw new Error(responseData.message || 'Unknown error occurred');
                 }

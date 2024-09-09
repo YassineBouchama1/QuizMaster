@@ -1,11 +1,16 @@
 const express = require('express');
 const path = require('path');
 const teacherRouter = require('./routes/teacherRoute');
+
 const studentRouter = require('./routes/studentRoute');
 const testRouter = require('./routes/index');
+
 const authRouter = require('./routes/authRoute');
+const guestRouter = require('./routes/guestRoute');
+const quizRouter = require('./routes/quizRoute');
+const classRouter = require('./routes/classRoute');
 const ApiError = require('./utils/ApiError');
-const globalError = require('./middleWares/globalError')
+const globalError = require('./middlewares/globalError')
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -27,7 +32,10 @@ app.set('view engine', 'ejs');
 app.use('/teachers', teacherRouter);
 app.use('/allQuiz', studentRouter);
 app.use('/auth', authRouter);
-app.use('/test', testRouter);
+app.use('/quiz', quizRouter);
+app.use('/class', classRouter);
+
+app.use('/', guestRouter); /// this for public routes: home page ....
 
 // Handle 404 errors: not found page
 app.use('*', (req, res, next) => {
