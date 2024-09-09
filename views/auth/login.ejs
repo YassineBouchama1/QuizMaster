@@ -69,7 +69,8 @@
                     resultMessage.textContent = responseData.message;
                     form.reset(); // clear the form
 
-                    window.location.replace('/teachers');
+                    responseData.role === 'teacher' ?   window.location.replace('/teachers'):  window.location.replace('/students');
+                  
 
                 } else {
                     throw new Error(responseData.message || 'Unknown error occurred');

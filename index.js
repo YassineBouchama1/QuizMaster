@@ -6,6 +6,7 @@ const authRouter = require('./routes/authRoute');
 const guestRouter = require('./routes/guestRoute');
 const quizRouter = require('./routes/quizRoute');
 const classRouter = require('./routes/classRoute');
+const studentRouter = require('./routes/studentRoute')
 const ApiError = require('./utils/ApiError');
 const globalError = require('./middlewares/globalError')
 
@@ -30,6 +31,7 @@ app.use('/teachers', teacherRouter);
 app.use('/auth', authRouter);
 app.use('/quiz', quizRouter);
 app.use('/class', classRouter);
+
 
 app.use('/', guestRouter); /// this for public routes: home page ....
 
