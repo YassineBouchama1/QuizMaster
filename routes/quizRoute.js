@@ -1,11 +1,12 @@
 const express = require('express');
 
 const { protect } = require('../middleWares/guard');
-const { createQuiz, quizForm } = require('../controllers/quizController');
+const { createQuiz, quizForm, getQuizById } = require('../controllers/quizController');
 
 const router = express.Router();
 
-
+router.route(":id")
+  .get(getQuizById)
 router.route('/create')
   .get(quizForm)
   .post(protect, createQuiz)

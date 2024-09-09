@@ -26,7 +26,7 @@ exports.createQuiz = expressAsyncHandler(async (req, res, next) => {
     const questionData = questions.map(question => ({
         text: question.text,
         numberOfPoints: question.numberOfPoints,
-        answerText: question.answerText
+        answerText: question.answer
     }));
 
     try {
@@ -51,3 +51,26 @@ exports.createQuiz = expressAsyncHandler(async (req, res, next) => {
         next(new ApiError(`Error creating quiz: ${error.message}`, 500));
     }
 });
+
+
+
+
+// @DESC: Get a quiz by ID with all associated questions and answers
+// @ROUTE: GET /quiz/:id
+// @ACCESS: Private
+exports.getQuizById = expressAsyncHandler(async (req, res, next) => {
+    const quizId = req.params.id;
+  
+    try {
+      const quiz = await quizModel.getQuizWithAssociationsByQuizId(quizId);
+  
+      if (!quiz) {
+        return next(new ApiError('Quiz not found', 404));
+      }
+  
+      res.status(200).json(quiz);
+    } catch (error) {
+      console.error('Error in controller:', error.message);
+      next(new ApiError(`Error: ${error.message}`, 500));
+    }
+  });

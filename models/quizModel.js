@@ -54,6 +54,74 @@ const insertQuiz = (title, description, teacher_id, viewAnswers, seeResult, succ
   });
 };
 
+
+
+// get  quiz with questions and their answers
+const getQuizWithAssociationsByQuizId = (quizId) => {
+  return new Promise((resolve, reject) => {
+    const sql = `
+      SELECT 
+        q.id AS quizId,
+        q.title AS quizTitle,
+        q.description AS quizDescription,
+        q.viewAnswers,
+        q.seeResult,
+        q.successScore,
+        q.status AS quizStatus,
+        qs.id AS questionId, 
+        qs.text AS questionText, 
+        qs.numberOfPoints,
+        an.id AS answerId, 
+        an.text AS answerText
+      FROM quizzes q
+      LEFT JOIN questions qs ON q.id = qs.quiz_id
+      LEFT JOIN answers an ON qs.id = an.question_id
+      WHERE q.id = ?
+    `;
+
+    db.query(sql, [quizId], (err, results) => {
+      if (err) return reject(err);
+
+      // Organize results into a structured format
+      const quiz = {
+        id: results[0]?.quizId,
+        title: results[0]?.quizTitle,
+        description: results[0]?.quizDescription,
+        viewAnswers: results[0]?.viewAnswers,
+        seeResult: results[0]?.seeResult,
+        successScore: results[0]?.successScore,
+        status: results[0]?.quizStatus,
+        questions: []
+      };
+
+      const questions = {};
+
+      results.forEach(row => {
+        if (row.questionId) {
+          if (!questions[row.questionId]) {
+            questions[row.questionId] = {
+              id: row.questionId,
+              text: row.questionText,
+              numberOfPoints: row.numberOfPoints,
+              answers: []
+            };
+          }
+          if (row.answerId) {
+            questions[row.questionId].answers.push({
+              id: row.answerId,
+              text: row.answerText
+            });
+          }
+        }
+      });
+
+      quiz.questions = Object.values(questions);
+
+      resolve(quiz);
+    });
+  });
+};
+
 // Get all quizzes
 const getAllQuizzes = (callback) => {
   const sql = 'SELECT * FROM quizzes';
@@ -63,14 +131,6 @@ const getAllQuizzes = (callback) => {
   });
 };
 
-// Get a quiz by ID
-const getQuizById = (id, callback) => {
-  const sql = 'SELECT * FROM quizzes WHERE id = ?';
-  db.query(sql, [id], (err, results) => {
-    if (err) return callback(err);
-    callback(null, results[0]);
-  });
-};
 
 // Optionally: Update a quiz by ID
 const updateQuizById = (id, title, description, teacher_id, viewAnswers, seeResult, successScore, status, callback) => {
@@ -95,9 +155,10 @@ const deleteQuizById = (id, callback) => {
 };
 
 module.exports = {
+  getQuizWithAssociationsByQuizId,
   addQuizWithQuestions,
   getAllQuizzes,
-  getQuizById,
+
   updateQuizById,
   deleteQuizById
 };
