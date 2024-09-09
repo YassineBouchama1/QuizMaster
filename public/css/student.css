@@ -1,0 +1,96 @@
+.logo {
+    color: #1935CA;
+    padding: 10px 40px;
+}
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f0eeee;
+}
+.content {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.profile {
+    display: flex;
+    gap: 40px;
+}
+.profile img {
+    width: 200px;
+    height: 200px;
+    background-color: gray;
+}
+.line {
+    width: 400px;
+    height: 6px;
+    border-radius: 10px;
+    background-color: #1935CA;
+}
+.state {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.state h1 {
+    color: #696F79;
+    font-size: 20px;
+}
+.state p {
+    color: #696F79;
+    font-size: 15px;
+}
+.stats {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+.w-6 {
+    color: #1935CA;
+}
+.icons {
+    background-color: white;
+    padding: 10px 10px;
+}
+.content h1 {
+    color: #1935CA;
+    font-size: 25px;
+}
+.quizzes {
+    padding: 15px 0px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+.quiz-card {
+    position: relative;
+    width: 30%;
+    height: 250px;
+    border-radius: 10px;
+    background-color: #6a78c9;
+}
+.quiz-card h1 {
+    padding: 2px 2px;
+    text-align: center;
+    color: #1935CA;
+    font-size: 15px;
+    background-color: white;
+    width: 30px;
+    border-radius: 10px;
+}
+.quiz-num {
+    
+    padding: 3px 10px;
+}
+.teacher-name {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 4px; 
+    color: white;
+    background-color: blue;
+    border-radius: 10px;
+    text-align: center;
+}
