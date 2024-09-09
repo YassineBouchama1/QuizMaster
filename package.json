@@ -4,13 +4,16 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "dev": "nodemon index.js"
+
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "// controller : add logic\r // route : create routes <urls : localhost:3000/'route'> and call controller inside it",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "dotenv": "^16.4.5",
