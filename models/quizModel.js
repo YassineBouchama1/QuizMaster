@@ -4,7 +4,7 @@ const answerModel = require('./answerModel')
 
 
 // add a new quiz along with its questions and answers in a single transaction
-const addQuizWithQuestions = (title, description, teacher_id, viewAnswers, seeResult, successScore, status, attempLimit, questions, callback) => {
+const addQuizWithQuestions = (title, description, teacher_id, attempLimit, viewAnswers, seeResult, successScore, status, questions, callback) => {
   console.log(questions)
   db.beginTransaction(async err => {
     if (err) {
@@ -14,7 +14,7 @@ const addQuizWithQuestions = (title, description, teacher_id, viewAnswers, seeRe
 
     try {
       // insert the quiz
-      const quizId = await insertQuiz(title, description, teacher_id, viewAnswers, seeResult, successScore, status);
+      const quizId = await insertQuiz(title, description, teacher_id, attempLimit, viewAnswers, seeResult, successScore, status);
 
       // insert questions and their answers
       const questionPromises = questions.map(async ({ text, numberOfPoints, answerText }) => {
@@ -42,10 +42,10 @@ const addQuizWithQuestions = (title, description, teacher_id, viewAnswers, seeRe
 };
 
 // insert quiexz
-const insertQuiz = (title, description, teacher_id, viewAnswers, seeResult, successScore, status) => {
+const insertQuiz = (title, description, teacher_id, attempLimit, viewAnswers, seeResult, successScore, status) => {
   return new Promise((resolve, reject) => {
-    const sql = 'INSERT INTO quizzes (title, description, teacher_id, viewAnswers, seeResult, successScore, status) VALUES (?, ?, ?, ?, ?, ?, ?)';
-    db.query(sql, [title, description, teacher_id, viewAnswers, seeResult, successScore, status], (err, results) => {
+    const sql = 'INSERT INTO quizzes (title, description, teacher_id, attempLimit,viewAnswers, seeResult, successScore, status) VALUES (?, ?, ?,?, ?, ?, ?, ?)';
+    db.query(sql, [title, description, teacher_id, attempLimit, viewAnswers, seeResult, successScore, status], (err, results) => {
       if (err) {
         return reject(new Error(`Error inserting quiz: ${err.message}`));
       }
@@ -81,7 +81,8 @@ const getQuizWithAssociationsByQuizId = (quizId) => {
 
     db.query(sql, [quizId], (err, results) => {
       if (err) return reject(err);
-
+      console.log(results)
+      if (results?.length === 0) resolve(null);
       // Organize results into a structured format
       const quiz = {
         id: results[0]?.quizId,
@@ -122,13 +123,15 @@ const getQuizWithAssociationsByQuizId = (quizId) => {
   });
 };
 
-// Get all quizzes
-const getAllQuizzes = (callback) => {
-  const sql = 'SELECT * FROM quizzes';
-  db.query(sql, (err, results) => {
-    if (err) return callback(err);
-    callback(null, results);
-  });
+// Get all quizzes belong teacher
+const getAllQuizzesBelongTeacher = (idTeacher) => {
+  return new Promise((resolve, reject) => {
+    const sql = 'SELECT * FROM quizzes WHERE teacher_id = ?';
+    db.query(sql, [idTeacher], (err, results) => {
+      if (err) return reject(err);
+      else resolve(results)
+    });
+  })
 };
 
 
@@ -146,19 +149,20 @@ const updateQuizById = (id, title, description, teacher_id, viewAnswers, seeResu
 };
 
 // Optionally: Delete a quiz by ID
-const deleteQuizById = (id, callback) => {
-  const sql = 'DELETE FROM quizzes WHERE id = ?';
-  db.query(sql, [id], (err, results) => {
-    if (err) return callback(err);
-    callback(null, results);
-  });
+const deleteQuizById = (id) => {
+  return new Promise((resolve, reject) => {
+    const sql = 'DELETE FROM quizzes WHERE id = ?';
+    db.query(sql, [id], (err, results) => {
+      if (err) return reject(err);
+      else resolve(results)
+    });
+  })
 };
 
 module.exports = {
   getQuizWithAssociationsByQuizId,
   addQuizWithQuestions,
-  getAllQuizzes,
-
+  getAllQuizzesBelongTeacher,
   updateQuizById,
   deleteQuizById
 };

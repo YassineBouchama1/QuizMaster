@@ -13,8 +13,8 @@ exports.createQuiz = expressAsyncHandler(async (req, res, next) => {
     const { title, description, viewAnswers, seeResult, successScore, status, attempLimit, questions } = req.body;
 
     // simple validation
-    if (!title) {
-        return next(new ApiError('Title is required', 400));
+    if (!title || !attempLimit) {
+        return next(new ApiError('missing required filed', 400));
     }
 
     // simple validation for questions
@@ -32,7 +32,7 @@ exports.createQuiz = expressAsyncHandler(async (req, res, next) => {
     try {
         // ue the addQuizWithQuestions func to insert quiz and questions in one transaction
         const quizCreated = await new Promise((resolve, reject) => {
-            quizModel.addQuizWithQuestions(title, description, teacher_id, attempLimit, viewAnswers, seeResult, successScore, status, attempLimit, questionData, (err, result) => {
+            quizModel.addQuizWithQuestions(title, description, teacher_id, attempLimit, viewAnswers, seeResult, successScore, status, questionData, (err, result) => {
                 if (err) {
                     return reject(err);
                 }
@@ -76,3 +76,52 @@ exports.getQuizById = expressAsyncHandler(async (req, res, next) => {
         next(new ApiError(`Error: ${error.message}`, 500));
     }
 });
+
+
+
+// @DESC: Get a quiz belong teacher
+// @ROUTE: GET /quiz/
+// @ACCESS: Private : teacher 
+exports.getAllQuizForTeacher = expressAsyncHandler(async (req, res, next) => {
+    const { id } = req.user;
+
+
+
+    try {
+        const quizzes = await quizModel.getAllQuizzesBelongTeacher(id);
+
+        // if (!quizzes) {
+        //     return next(new ApiError('Quiz not found', 404));
+        // }
+
+        res.status(200).json(quizzes);
+    } catch (error) {
+        console.error('Error in controller:', error.message);
+        next(new ApiError(`Error: ${error.message}`, 500));
+    }
+});
+
+
+exports.deleteQuiz = expressAsyncHandler(async (req, res, next) => {
+    const { id } = req.params;
+
+    try {
+        // check if this quiz exst
+        const quizzes = await quizModel.deleteQuizById(id);
+
+        // if (!quizzes) {
+        //     return next(new ApiError('Quiz not found', 404));
+        // }
+
+        res.status(201).json({
+            success: true,
+            message: 'Deleted successfully',
+            result: quizzes
+        });
+
+    } catch (error) {
+        console.error('Error in controller:', error.message);
+        next(new ApiError(`Error: ${error.message}`, 500));
+    }
+
+})

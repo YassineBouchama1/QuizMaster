@@ -1,6 +1,7 @@
 const expressAsyncHandler = require('express-async-handler');
 
 const teacherModel = require('../models/teacher');
+const studentModel = require('../models/studentModel')
 const jwt = require('jsonwebtoken');
 const ApiError = require('../utils/ApiError');
 const JWT_SECRET = process.env.JWT_SECRET
@@ -23,13 +24,28 @@ exports.protect = expressAsyncHandler(async (req, res, next) => {
     //2) decoded Token 
     const decoded = jwt.verify(token, JWT_SECRET)
 
-    //3) check if user exist 
-    const currentUser = await new Promise((resolve, reject) => {
-        teacherModel.getTeacherById(decoded.userId, (err, resulte) => {
-            if (err) reject(err); // if there is error send it to catch 
-            else resolve(resulte);
+
+
+
+    // 3) Check if the user exists in the teachers table
+    let currentUser = await new Promise((resolve, reject) => {
+        teacherModel.getTeacherById(decoded.userId, (err, result) => {
+            if (err) reject(err); // Handle errors
+            else resolve(result);
         });
     });
+
+    // 4) If not found in the teachers table, check the students table
+    if (!currentUser) {
+        currentUser = await new Promise((resolve, reject) => {
+            studentModel.getStudentById(decoded.userId, (err, result) => {
+                if (err) reject(err); // Handle errors
+                else resolve(result);
+            });
+        });
+    }
+
+
 
 
 
@@ -45,14 +61,14 @@ exports.protect = expressAsyncHandler(async (req, res, next) => {
 
 //   // @desc    Authorization (User Permissions)
 //   // ["admin", "manager"]
-//   exports.allowedTo = (...roles) =>
-//     expressAsyncHandler(async (req, res, next) => {
-//       // 1) access roles
-//       // 2) access registered user (req.user.role)
-//       if (!roles.includes(req.user.role)) {
-//         return next(
-//           new ApiError('You are not allowed to access this route', 403)
-//         );
-//       }
-//       next();
-//     });
+exports.allowedTo = (...roles) => expressAsyncHandler(async (req, res, next) => {
+    console.log(roles)
+    // 1) access roles
+    // 2) access registered user (req.user.role)
+    if (!roles.includes(req.user.role)) {
+        return next(
+            new ApiError('You are not allowed to access this route', 403)
+        );
+    }
+    next();
+});

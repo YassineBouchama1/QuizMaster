@@ -10,7 +10,7 @@ const bcrypt = require('bcryptjs');
 const JWT_SECRET = process.env.JWT_SECRET
 
 // create token by passing id user
-const createToken = (payload) => jwt.sign({ userId: payload }, JWT_SECRET)
+const createToken = (payload) => jwt.sign({ ...payload }, JWT_SECRET)
 
 
 
@@ -130,8 +130,18 @@ exports.loginTeacherApi = expressAsyncHandler(async (req, res, next) => {
             return next(new ApiError('Email or password incorrect', 404));
         }
 
-        // create token
-        const token = await createToken(user.id);
+
+
+
+        // Create JWT payload with role
+        const payload = {
+            userId: user.id,
+            role: user.role
+
+        };
+
+        // Create token
+        const token = await createToken(payload);
 
         res.status(201).json({
             success: true,

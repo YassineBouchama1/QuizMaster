@@ -1,20 +1,19 @@
 const express = require('express');
 
 const { createClass, classForm, assignStudentsToClass } = require('../controllers/classController');
-const { protect } = require('../middleWares/guard');
+const { protect, allowedTo } = require('../middleWares/guard');
 
 const router = express.Router();
 
-router.route('/create')
-  .get(classForm)
 
 
 
 router.route('/create')
-  .post(protect, createClass)
+.get(classForm)
+  .post(protect, allowedTo('teacher'), createClass)
 
-router.route('/asign')
-  .post(protect, assignStudentsToClass)
+router.route('/assign')
+  .post(protect, allowedTo('teacher'), assignStudentsToClass)
 
 module.exports = router;
 
