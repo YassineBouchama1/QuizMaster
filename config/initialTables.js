@@ -58,11 +58,11 @@ exports.Tables = [
   CREATE TABLE IF NOT EXISTS classes (
       id INT AUTO_INCREMENT PRIMARY KEY,
       name VARCHAR(255) NOT NULL UNIQUE,
-      teacher_id INT,
+      teacher_id INT UNIQUE NOT NULL,  
       status ENUM('active', 'suspended') DEFAULT 'active',
       deleted_at TIMESTAMP NULL DEFAULT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (teacher_id) REFERENCES teachers(id) ON DELETE SET NULL
+      FOREIGN KEY (teacher_id) REFERENCES teachers(id) ON DELETE CASCADE
   );
   `,
     `

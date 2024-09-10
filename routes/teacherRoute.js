@@ -5,7 +5,7 @@ const {
   dashboardTeacher,
   getTeacher,
 } = require('../controllers/teacherController');
-const { protect } = require('../middlewares/guard');
+const { protect } = require('../middleWares/guard');
 
 const router = express.Router();
 

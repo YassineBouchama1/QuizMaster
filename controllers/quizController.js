@@ -90,9 +90,7 @@ exports.getAllQuizForTeacher = expressAsyncHandler(async (req, res, next) => {
     try {
         const quizzes = await quizModel.getAllQuizzesBelongTeacher(id);
 
-        // if (!quizzes) {
-        //     return next(new ApiError('Quiz not found', 404));
-        // }
+  
 
         res.status(200).json(quizzes);
     } catch (error) {
@@ -102,6 +100,28 @@ exports.getAllQuizForTeacher = expressAsyncHandler(async (req, res, next) => {
 });
 
 
+// @DESC: Get all quiz belong students teacher
+// @ROUTE: GET /quiz/students
+// @ACCESS: Private : students 
+exports.quizBelongStudent = expressAsyncHandler(async (req, res, next) => {
+    const { id } = req.user;
+
+
+
+    try {
+        const quizzes = await quizModel.getAllQuizzesBelongStudent(id);
+
+  
+
+        res.status(200).json(quizzes);
+    } catch (error) {
+        console.error('Error in controller:', error.message);
+        next(new ApiError(`Error: ${error.message}`, 500));
+    }
+});
+
+
+
 exports.deleteQuiz = expressAsyncHandler(async (req, res, next) => {
     const { id } = req.params;
 
@@ -109,9 +129,7 @@ exports.deleteQuiz = expressAsyncHandler(async (req, res, next) => {
         // check if this quiz exst
         const quizzes = await quizModel.deleteQuizById(id);
 
-        // if (!quizzes) {
-        //     return next(new ApiError('Quiz not found', 404));
-        // }
+    
 
         res.status(201).json({
             success: true,
@@ -125,3 +143,31 @@ exports.deleteQuiz = expressAsyncHandler(async (req, res, next) => {
     }
 
 })
+
+
+exports.updateQuiz = expressAsyncHandler(async (req, res, next) => {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    try {
+        // check if the quiz exists
+        const quizExists = await quizModel.findQuizById(id);
+
+        if (!quizExists) {
+            return next(new ApiError('Quiz not found', 404));
+        }
+
+        // update the quiz with only the provided fields
+        const updatedQuiz = await quizModel.updateQuizById(id, updateData);
+
+        res.status(200).json({
+            success: true,
+            message: 'Quiz updated successfully',
+            result: updatedQuiz
+        });
+
+    } catch (error) {
+        console.error('Error in controller:', error.message);
+        next(new ApiError(`Error: ${error.message}`, 500));
+    }
+});

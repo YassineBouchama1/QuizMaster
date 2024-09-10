@@ -34,6 +34,7 @@ app.use('/allQuiz', studentRouter);
 app.use('/auth', authRouter);
 app.use('/quiz', quizRouter);
 app.use('/class', classRouter);
+app.use('/students', studentRouter);
 
 
 app.use('/', guestRouter); /// this for public routes: home page ....

@@ -67,6 +67,7 @@ const getQuizWithAssociationsByQuizId = (quizId) => {
         q.viewAnswers,
         q.seeResult,
         q.successScore,
+        q.attempLimit,
         q.status AS quizStatus,
         qs.id AS questionId, 
         qs.text AS questionText, 
@@ -135,18 +136,67 @@ const getAllQuizzesBelongTeacher = (idTeacher) => {
 };
 
 
+
+// Get all quizzes belong student
+const getAllQuizzesBelongStudent = (idStudent) => {
+  return new Promise((resolve, reject) => {
+    const sql = `SELECT q.*
+FROM quizzes q
+JOIN classes c ON q.teacher_id = c.teacher_id
+JOIN students s ON s.class_id = c.id
+WHERE s.id = ?;`;
+    db.query(sql, [idStudent], (err, results) => {
+      if (err) return reject(err);
+      else resolve(results)
+    });
+  })
+};
+
+
+
 // Optionally: Update a quiz by ID
-const updateQuizById = (id, title, description, teacher_id, viewAnswers, seeResult, successScore, status, callback) => {
-  const sql = `
-    UPDATE quizzes 
-    SET title = ?, description = ?, teacher_id = ?, viewAnswers = ?, seeResult = ?, successScore = ?, status = ? 
-    WHERE id = ?
-  `;
-  db.query(sql, [title, description, teacher_id, viewAnswers, seeResult, successScore, status, id], (err, results) => {
-    if (err) return callback(err);
-    callback(null, results);
+const updateQuizById = (id, updateData) => {
+  // Construct the dynamic update query
+  let sql = 'UPDATE quizzes SET ';
+  const fields = [];
+  const values = [];
+
+  // set only field that comes from frontend
+  Object.keys(updateData).forEach((key) => {
+    fields.push(`${key} = ?`);
+    values.push(updateData[key]);
+  });
+
+  sql += fields.join(', ') + ' WHERE id = ?';
+  values.push(id);
+
+  return new Promise((resolve, reject) => {
+    db.query(sql, values, (err, results) => {
+      if (err) return reject(err);
+      resolve(results);
+    });
   });
 };
+
+
+const findQuizById = (id) => {
+  return new Promise((resolve, reject) => {
+    const sql = 'SELECT * FROM quizzes WHERE id = ?';
+
+    db.query(sql, [id], (err, results) => {
+      if (err) return reject(err);
+
+      if (results.length === 0) {
+        // nuiz found with the given ID
+        return resolve(null);
+      }
+
+      resolve(results[0]); // return found quiz
+    });
+  });
+};
+
+
 
 // Optionally: Delete a quiz by ID
 const deleteQuizById = (id) => {
@@ -164,5 +214,7 @@ module.exports = {
   addQuizWithQuestions,
   getAllQuizzesBelongTeacher,
   updateQuizById,
-  deleteQuizById
+  deleteQuizById,
+  findQuizById,
+  getAllQuizzesBelongStudent
 };

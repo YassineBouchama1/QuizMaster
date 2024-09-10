@@ -25,7 +25,18 @@ exports.createClass = expressAsyncHandler(async (req, res, next) => {
     }
 
 
+
+
+
     try {
+
+        // check if teacher has already class
+        const hasClass = await classModel.getTeacherById(id)
+        console.log(hasClass)
+        if (hasClass) {
+            return next(new ApiError('already has class', 400));
+        }
+
 
         const classCreated = await classModel.inserClass(req.body.name, id)
 
