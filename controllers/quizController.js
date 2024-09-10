@@ -61,6 +61,8 @@ exports.createQuiz = expressAsyncHandler(async (req, res, next) => {
 exports.getQuizById = expressAsyncHandler(async (req, res, next) => {
     const quizId = req.params.id;
   
+
+    // 
     try {
       const quiz = await quizModel.getQuizWithAssociationsByQuizId(quizId);
   

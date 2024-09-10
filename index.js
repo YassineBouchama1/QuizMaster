@@ -9,7 +9,7 @@ const quizRouter = require('./routes/quizRoute');
 const classRouter = require('./routes/classRoute');
 const studentRouter = require('./routes/studentRoute')
 const homeRouter = require('./routes/homeRouter');
-const ApiError = require('./utils/ApiError');
+
 const globalError = require('./middlewares/globalError')
 
 const app = express();

@@ -2,7 +2,7 @@
 // here add all native code for create tables
 // used in /config/database
 exports.Tables = [
-  `
+    `
   CREATE TABLE IF NOT EXISTS teachers (
       id INT AUTO_INCREMENT PRIMARY KEY,
       firstName VARCHAR(255) NOT NULL,
@@ -16,12 +16,13 @@ exports.Tables = [
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   );
   `,
-  `
+    `
   CREATE TABLE IF NOT EXISTS quizzes (
       id INT AUTO_INCREMENT PRIMARY KEY,
       title VARCHAR(255) NOT NULL,
       description TEXT,
       teacher_id INT,
+      attempLimit INT,
       viewAnswers BOOLEAN DEFAULT FALSE,
       seeResult BOOLEAN DEFAULT FALSE,
       successScore FLOAT DEFAULT 0.0,
@@ -31,7 +32,7 @@ exports.Tables = [
       FOREIGN KEY (teacher_id) REFERENCES teachers(id) ON DELETE SET NULL
   );
   `,
-  `
+    `
   CREATE TABLE IF NOT EXISTS questions (
       id INT AUTO_INCREMENT PRIMARY KEY,
       text VARCHAR(255) NOT NULL,
@@ -43,7 +44,7 @@ exports.Tables = [
   );
   `,
 
-  `
+    `
   CREATE TABLE IF NOT EXISTS answers (
       id INT AUTO_INCREMENT PRIMARY KEY,
       text VARCHAR(255) NOT NULL,
@@ -53,7 +54,7 @@ exports.Tables = [
       FOREIGN KEY (question_id) REFERENCES questions(id) ON DELETE CASCADE
   );
   `,
-  `
+    `
   CREATE TABLE IF NOT EXISTS classes (
       id INT AUTO_INCREMENT PRIMARY KEY,
       name VARCHAR(255) NOT NULL UNIQUE,
@@ -64,7 +65,7 @@ exports.Tables = [
       FOREIGN KEY (teacher_id) REFERENCES teachers(id) ON DELETE SET NULL
   );
   `,
-  `
+    `
   CREATE TABLE IF NOT EXISTS students (
     id INT AUTO_INCREMENT PRIMARY KEY,
     firstName VARCHAR(255) NOT NULL,
