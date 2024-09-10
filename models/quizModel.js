@@ -4,7 +4,7 @@ const answerModel = require('./answerModel')
 
 
 // add a new quiz along with its questions and answers in a single transaction
-const addQuizWithQuestions = (title, description, teacher_id, viewAnswers, seeResult, successScore, status, questions, callback) => {
+const addQuizWithQuestions = (title, description, teacher_id, viewAnswers, seeResult, successScore, status, attempLimit, questions, callback) => {
   console.log(questions)
   db.beginTransaction(async err => {
     if (err) {

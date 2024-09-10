@@ -10,7 +10,7 @@ exports.quizForm = (req, res) => res.render('teachers/quiz/create');
 // @ACCESS: Private
 exports.createQuiz = expressAsyncHandler(async (req, res, next) => {
     const { id: teacher_id } = req.user;
-    const { title, description, viewAnswers, seeResult, successScore, status, questions } = req.body;
+    const { title, description, viewAnswers, seeResult, successScore, status, attempLimit, questions } = req.body;
 
     // simple validation
     if (!title) {
@@ -32,7 +32,7 @@ exports.createQuiz = expressAsyncHandler(async (req, res, next) => {
     try {
         // ue the addQuizWithQuestions func to insert quiz and questions in one transaction
         const quizCreated = await new Promise((resolve, reject) => {
-            quizModel.addQuizWithQuestions(title, description, teacher_id, viewAnswers, seeResult, successScore, status, questionData, (err, result) => {
+            quizModel.addQuizWithQuestions(title, description, teacher_id, attempLimit, viewAnswers, seeResult, successScore, status, attempLimit, questionData, (err, result) => {
                 if (err) {
                     return reject(err);
                 }
@@ -60,19 +60,19 @@ exports.createQuiz = expressAsyncHandler(async (req, res, next) => {
 // @ACCESS: Private
 exports.getQuizById = expressAsyncHandler(async (req, res, next) => {
     const quizId = req.params.id;
-  
+
 
     // 
     try {
-      const quiz = await quizModel.getQuizWithAssociationsByQuizId(quizId);
-  
-      if (!quiz) {
-        return next(new ApiError('Quiz not found', 404));
-      }
-  
-      res.status(200).json(quiz);
+        const quiz = await quizModel.getQuizWithAssociationsByQuizId(quizId);
+
+        if (!quiz) {
+            return next(new ApiError('Quiz not found', 404));
+        }
+
+        res.status(200).json(quiz);
     } catch (error) {
-      console.error('Error in controller:', error.message);
-      next(new ApiError(`Error: ${error.message}`, 500));
+        console.error('Error in controller:', error.message);
+        next(new ApiError(`Error: ${error.message}`, 500));
     }
-  });
+});
