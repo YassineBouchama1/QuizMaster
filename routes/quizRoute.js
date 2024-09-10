@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { createQuiz, quizForm, getQuizById, getAllQuizForTeacher, deleteQuiz, updateQuiz, quizBelongStudent } = require('../controllers/quizController');
+const { createQuiz, quizForm, getQuizById, getAllQuizForTeacher, deleteQuiz, updateQuiz, quizBelongStudent, assignAttempToStudent } = require('../controllers/quizController');
 const { protect, allowedTo } = require('../middleWares/guard');
 
 const router = express.Router();
@@ -15,6 +15,8 @@ router.route("/student")
   .get(protect, allowedTo('student'), quizBelongStudent)
 
 
+router.route('/attemp')
+  .post(protect, allowedTo('student'), assignAttempToStudent) //alowed only for student when pass quiz
 
 
 
@@ -23,7 +25,7 @@ router.route('/create')
   .post(protect, allowedTo('teacher'), createQuiz) //alowed only for teahcer
 
 router.route("/:id")
-  .get(getQuizById)
+  .get(protect, allowedTo('teacher', 'student'), getQuizById)
   .delete(protect, allowedTo('teacher'), deleteQuiz)
   .put(protect, allowedTo('teacher'), updateQuiz)
 

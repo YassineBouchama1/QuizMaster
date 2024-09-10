@@ -79,6 +79,20 @@ exports.Tables = [
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE SET NULL
   );
-  `
+  `,
+    `
+CREATE TABLE IF NOT EXISTS attempts (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  score FLOAT DEFAULT 0.0,
+  win BOOLEAN DEFAULT FALSE,
+  status ENUM('active', 'deactivate') DEFAULT 'active',  
+  student_id INT NULL, 
+  quiz_id INT NULL, 
+  deleted_at TIMESTAMP NULL DEFAULT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE SET NULL,
+  FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE SET NULL
+);
+`
 ];
 

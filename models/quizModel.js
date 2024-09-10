@@ -67,7 +67,7 @@ const getQuizWithAssociationsByQuizId = (quizId) => {
         q.viewAnswers,
         q.seeResult,
         q.successScore,
-        q.attempLimit,
+      q.attempLimit,
         q.status AS quizStatus,
         qs.id AS questionId, 
         qs.text AS questionText, 
@@ -82,13 +82,13 @@ const getQuizWithAssociationsByQuizId = (quizId) => {
 
     db.query(sql, [quizId], (err, results) => {
       if (err) return reject(err);
-      console.log(results)
       if (results?.length === 0) resolve(null);
       // Organize results into a structured format
       const quiz = {
         id: results[0]?.quizId,
         title: results[0]?.quizTitle,
         description: results[0]?.quizDescription,
+        attempLimit: results[0]?.attempLimit,
         viewAnswers: results[0]?.viewAnswers,
         seeResult: results[0]?.seeResult,
         successScore: results[0]?.successScore,
