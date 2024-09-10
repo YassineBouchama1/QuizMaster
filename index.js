@@ -37,7 +37,7 @@ app.use('/class', classRouter);
 
 
 app.use('/', guestRouter); /// this for public routes: home page ....
-app.use('/test', testRouter);
+
 app.use('/home', homeRouter);
 
 
