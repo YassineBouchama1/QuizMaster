@@ -1,14 +1,14 @@
 const express = require('express');
 const path = require('path');
 const teacherRouter = require('./routes/teacherRoute');
-
-
 const authRouter = require('./routes/authRoute');
 const guestRouter = require('./routes/guestRoute');
 const quizRouter = require('./routes/quizRoute');
 const classRouter = require('./routes/classRoute');
-const studentRouter = require('./routes/studentRoute')
+const studentRouter = require('./routes/studentRoute');
 const homeRouter = require('./routes/homeRouter');
+const subjectRouter = require('./routes/subjectRouter');
+
 
 const globalError = require('./middlewares/globalError')
 
@@ -30,10 +30,12 @@ app.set('view engine', 'ejs');
 
 // Routes
 app.use('/teachers', teacherRouter);
-app.use('/allQuiz', studentRouter);
+app.use('/student', studentRouter);
 app.use('/auth', authRouter);
 app.use('/quiz', quizRouter);
 app.use('/class', classRouter);
+app.use('/subject', subjectRouter);
+
 
 
 app.use('/', guestRouter); /// this for public routes: home page ....

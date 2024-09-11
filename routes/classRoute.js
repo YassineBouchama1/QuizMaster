@@ -1,7 +1,6 @@
 const express = require('express');
-
+const { protect } = require('../middlewares/guard');
 const { createClass, classForm, assignStudentsToClass } = require('../controllers/classController');
-const { protect } = require('../middleWares/guard');
 
 const router = express.Router();
 

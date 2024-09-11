@@ -79,6 +79,16 @@ exports.Tables = [
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE SET NULL
   );
-  `
+  `,
+    `
+  CREATE TABLE IF NOT EXISTS subjects (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    subSubject_id INT NULL,
+    deleted_at TIMESTAMP NULL DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (subSubject_id) REFERENCES subjects(id) ON DELETE SET NULL
+    )
+    `
 ];
 

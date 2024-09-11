@@ -1,17 +1,16 @@
 const express = require('express');
+const { protect } = require('../middlewares/guard');
+
 const {
-
-
   dashboardTeacher,
   getTeacher,
 } = require('../controllers/teacherController');
-const { protect } = require('../middlewares/guard');
 
 const router = express.Router();
 
 router.route('/')
   .get(dashboardTeacher)
-
+  
 
 
 router.route('/me')
