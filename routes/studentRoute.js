@@ -1,5 +1,5 @@
 const express = require('express');
-const { allQuiz, studentsBelongTeacher } = require('../controllers/studentController');
+const { allQuiz, studentsBelongTeacher, assignQuizToStudentController } = require('../controllers/studentController');
 const { protect, allowedTo } = require('../middleWares/guard');
 
 const router = express.Router();
@@ -13,4 +13,7 @@ router.route('/')
 router.route('/teacher')
     .get(protect, allowedTo('teacher'), studentsBelongTeacher);
 
+
+    router.route('/assignQuiz')
+    .post(protect, allowedTo('teacher'),assignQuizToStudentController)
 module.exports = router;

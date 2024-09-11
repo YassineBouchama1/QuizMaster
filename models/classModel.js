@@ -28,8 +28,7 @@ const assignStudentsToClass = (classId, studentIds) => {
 
         // remove duplicate student IDs
         const uniqueStudentIds = [...new Set(studentIds)];
-        console.log(uniqueStudentIds)
-
+      
         const sql = 'UPDATE students SET class_id = ? WHERE id IN (?)';
 
         db.query(sql, [classId, uniqueStudentIds], (err, results) => {

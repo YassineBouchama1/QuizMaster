@@ -93,6 +93,18 @@ CREATE TABLE IF NOT EXISTS attempts (
   FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE SET NULL,
   FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE SET NULL
 );
+`,
+`
+CREATE TABLE IF NOT EXISTS quizperstudent (
+id INT AUTO_INCREMENT PRIMARY KEY,
+status ENUM('active', 'deactivate') DEFAULT 'active',  
+student_id INT NULL, 
+quiz_id INT NULL, 
+deleted_at TIMESTAMP NULL DEFAULT NULL,
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE SET NULL,
+FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE SET NULL
+);
 `
 ];
 
