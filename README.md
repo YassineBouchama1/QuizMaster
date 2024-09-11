@@ -34,3 +34,15 @@ For testing the API, use the Postman collection:
 1. **Clone the Repository**
    ```bash
    git clone [repository-url]
+
+2. **Install Dependencies**
+   ```cd [project-directory]
+   npm install
+   
+3. **Create Environment File**
+   ```cp .env.example .env
+   Open the .env file and add your specific values for the environment variables.
+
+4. **Run the Application**
+   ```npm start
+
