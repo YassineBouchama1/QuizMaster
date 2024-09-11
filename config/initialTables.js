@@ -2,7 +2,7 @@
 // here add all native code for create tables
 // used in /config/database
 exports.Tables = [
-    `
+  `
   CREATE TABLE IF NOT EXISTS teachers (
       id INT AUTO_INCREMENT PRIMARY KEY,
       firstName VARCHAR(255) NOT NULL,
@@ -16,7 +16,7 @@ exports.Tables = [
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   );
   `,
-    `
+  `
   CREATE TABLE IF NOT EXISTS quizzes (
       id INT AUTO_INCREMENT PRIMARY KEY,
       title VARCHAR(255) NOT NULL,
@@ -32,7 +32,7 @@ exports.Tables = [
       FOREIGN KEY (teacher_id) REFERENCES teachers(id) ON DELETE SET NULL
   );
   `,
-    `
+  `
   CREATE TABLE IF NOT EXISTS questions (
       id INT AUTO_INCREMENT PRIMARY KEY,
       text VARCHAR(255) NOT NULL,
@@ -44,7 +44,7 @@ exports.Tables = [
   );
   `,
 
-    `
+  `
   CREATE TABLE IF NOT EXISTS answers (
       id INT AUTO_INCREMENT PRIMARY KEY,
       text VARCHAR(255) NOT NULL,
@@ -54,18 +54,18 @@ exports.Tables = [
       FOREIGN KEY (question_id) REFERENCES questions(id) ON DELETE CASCADE
   );
   `,
-    `
+  `
   CREATE TABLE IF NOT EXISTS classes (
       id INT AUTO_INCREMENT PRIMARY KEY,
       name VARCHAR(255) NOT NULL UNIQUE,
-      teacher_id INT,
+      teacher_id INT UNIQUE NOT NULL,  
       status ENUM('active', 'suspended') DEFAULT 'active',
       deleted_at TIMESTAMP NULL DEFAULT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (teacher_id) REFERENCES teachers(id) ON DELETE SET NULL
+      FOREIGN KEY (teacher_id) REFERENCES teachers(id) ON DELETE CASCADE
   );
   `,
-    `
+  `
   CREATE TABLE IF NOT EXISTS students (
     id INT AUTO_INCREMENT PRIMARY KEY,
     firstName VARCHAR(255) NOT NULL,
@@ -79,6 +79,57 @@ exports.Tables = [
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE SET NULL
   );
+  `,
   `
+CREATE TABLE IF NOT EXISTS attempts (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  score FLOAT DEFAULT 0.0,
+  win BOOLEAN DEFAULT FALSE,
+  status ENUM('active', 'deactivate') DEFAULT 'active',  
+  student_id INT NULL, 
+  quiz_id INT NULL, 
+  deleted_at TIMESTAMP NULL DEFAULT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE SET NULL,
+  FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE SET NULL
+);
+`,
+  `
+CREATE TABLE IF NOT EXISTS quizperstudent (
+id INT AUTO_INCREMENT PRIMARY KEY,
+status ENUM('active', 'deactivate') DEFAULT 'active',  
+student_id INT, 
+quiz_id INT, 
+deleted_at TIMESTAMP NULL DEFAULT NULL,
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE SET NULL,
+FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE SET NULL
+);
+`
+,
+  `
+CREATE TABLE IF NOT EXISTS requests (
+id INT AUTO_INCREMENT PRIMARY KEY,
+status ENUM('pending','accept', 'decline') DEFAULT 'pending',  
+student_id INT, 
+quiz_id INT, 
+description TEXT,
+deleted_at TIMESTAMP NULL DEFAULT NULL,
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE SET NULL,
+FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE SET NULL
+);
+`,
+    `
+  CREATE TABLE IF NOT EXISTS subjects (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    subSubject_id INT NULL,
+    deleted_at TIMESTAMP NULL DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (subSubject_id) REFERENCES subjects(id) ON DELETE SET NULL
+    )
+    `
 ];
+
 

@@ -28,8 +28,7 @@ const assignStudentsToClass = (classId, studentIds) => {
 
         // remove duplicate student IDs
         const uniqueStudentIds = [...new Set(studentIds)];
-
-
+      
         const sql = 'UPDATE students SET class_id = ? WHERE id IN (?)';
 
         db.query(sql, [classId, uniqueStudentIds], (err, results) => {
@@ -63,12 +62,15 @@ const getAllTeachers = (callback) => {
 };
 
 // get a teacher by ID
-const getTeacherById = (id, callback) => {
-    const sql = 'SELECT * FROM classes WHERE id = ?';
-    db.query(sql, [id], (err, results) => {
-        if (err) return callback(err);
-        callback(null, results[0]);
-    });
+const getTeacherById = (id) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM classes WHERE teacher_id = ?';
+        db.query(sql, [id], (err, results) => {
+            // if (err) reject(err)
+            if (err) resolve(null)
+            else resolve(results[0])
+        });
+    })
 };
 
 

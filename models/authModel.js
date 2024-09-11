@@ -25,9 +25,9 @@ const addStudent = (firstName, lastName, email, password, callback) => {
 // this func two check if email already exist in one of  tables
 const checkEmailExists = (email, callback) => {
     const sql = `
-      SELECT 'students' AS table_name, id, password FROM students WHERE email = ?
+      SELECT 'students' AS table_name, id, password, role FROM students WHERE email = ?
       UNION
-      SELECT 'teachers' AS table_name, id, password FROM teachers WHERE email = ?
+      SELECT 'teachers' AS table_name, id, password, role FROM teachers WHERE email = ?
     `;
 
     db.query(sql, [email, email], (err, results) => {

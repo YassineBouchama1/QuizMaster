@@ -1,5 +1,6 @@
 const expressAsyncHandler = require('express-async-handler');
 const quizModel = require('../models/quizModel');
+const attempModel = require('../models/attempModel');
 const ApiError = require('../utils/ApiError');
 
 // @DESC: Render HTML form for creating a quiz
@@ -13,8 +14,8 @@ exports.createQuiz = expressAsyncHandler(async (req, res, next) => {
     const { title, description, viewAnswers, seeResult, successScore, status, attempLimit, questions } = req.body;
 
     // simple validation
-    if (!title) {
-        return next(new ApiError('Title is required', 400));
+    if (!title || !attempLimit) {
+        return next(new ApiError('missing required filed', 400));
     }
 
     // simple validation for questions
@@ -32,7 +33,7 @@ exports.createQuiz = expressAsyncHandler(async (req, res, next) => {
     try {
         // ue the addQuizWithQuestions func to insert quiz and questions in one transaction
         const quizCreated = await new Promise((resolve, reject) => {
-            quizModel.addQuizWithQuestions(title, description, teacher_id, attempLimit, viewAnswers, seeResult, successScore, status, attempLimit, questionData, (err, result) => {
+            quizModel.addQuizWithQuestions(title, description, teacher_id, attempLimit, viewAnswers, seeResult, successScore, status, questionData, (err, result) => {
                 if (err) {
                     return reject(err);
                 }
@@ -61,13 +62,28 @@ exports.createQuiz = expressAsyncHandler(async (req, res, next) => {
 exports.getQuizById = expressAsyncHandler(async (req, res, next) => {
     const quizId = req.params.id;
 
+    const { role, id } = req.user
 
     // 
     try {
-        const quiz = await quizModel.getQuizWithAssociationsByQuizId(quizId);
 
+
+
+        const quiz = await quizModel.getQuizWithAssociationsByQuizId(quizId);
         if (!quiz) {
             return next(new ApiError('Quiz not found', 404));
+        }
+
+        // validate if student can pass quiz or he pass his limit atempts
+        // check if request from teacher so no need to validate limit attemps
+        if (role === 'student') {
+
+            const attemps = await attempModel.findStudentAttempBelongQuiz(quiz.id, id)
+
+            if (attemps?.length >= quiz?.attempLimit) {
+                return next(new ApiError(`you reach limit for play this QUiz`, 403));
+            }
+
         }
 
         res.status(200).json(quiz);
@@ -76,3 +92,164 @@ exports.getQuizById = expressAsyncHandler(async (req, res, next) => {
         next(new ApiError(`Error: ${error.message}`, 500));
     }
 });
+
+
+
+// @DESC: Get a quiz belong teacher
+// @ROUTE: GET /quiz/
+// @ACCESS: Private : teacher 
+exports.getAllQuizForTeacher = expressAsyncHandler(async (req, res, next) => {
+    const { id } = req.user;
+
+
+
+    try {
+        const quizzes = await quizModel.getAllQuizzesBelongTeacher(id);
+
+
+
+        res.status(200).json(quizzes);
+    } catch (error) {
+        console.error('Error in controller:', error.message);
+        next(new ApiError(`Error: ${error.message}`, 500));
+    }
+});
+
+
+// @DESC: Get all quiz belong students teacher
+// @ROUTE: GET /quiz/students
+// @ACCESS: Private : students 
+exports.quizBelongStudent = expressAsyncHandler(async (req, res, next) => {
+    const { id } = req.user;
+
+
+
+    try {
+        const quizzes = await quizModel.getAllQuizzesBelongStudent(id);
+
+
+
+        res.status(200).json(quizzes);
+    } catch (error) {
+        console.error('Error in controller:', error.message);
+        next(new ApiError(`Error: ${error.message}`, 500));
+    }
+});
+
+
+
+exports.deleteQuiz = expressAsyncHandler(async (req, res, next) => {
+    const { id } = req.params;
+
+    try {
+        // check if this quiz exst
+        const quizzes = await quizModel.deleteQuizById(id);
+
+
+
+        res.status(201).json({
+            success: true,
+            message: 'Deleted successfully',
+            result: quizzes
+        });
+
+    } catch (error) {
+        console.error('Error in controller:', error.message);
+        next(new ApiError(`Error: ${error.message}`, 500));
+    }
+
+})
+
+
+
+
+
+exports.updateQuiz = expressAsyncHandler(async (req, res, next) => {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    try {
+        // check if the quiz exists
+        const quizExists = await quizModel.findQuizById(id);
+
+        if (!quizExists) {
+            return next(new ApiError('Quiz not found', 404));
+        }
+
+        // update the quiz with only the provided fields
+        const updatedQuiz = await quizModel.updateQuizById(id, updateData);
+
+        res.status(200).json({
+            success: true,
+            message: 'Quiz updated successfully',
+            result: updatedQuiz
+        });
+
+    } catch (error) {
+        console.error('Error in controller:', error.message);
+        next(new ApiError(`Error: ${error.message}`, 500));
+    }
+});
+
+
+
+//@desc : this create attemp fter student finish quiz 
+exports.assignAttempToStudent = expressAsyncHandler(async (req, res, next) => {
+    const { score } = req.body
+    const { id: quizId } = req.params
+
+    const { id: studentId, role } = req.user
+
+
+
+    // TODO: check if user achive limit   play this quiiz
+
+    try {
+
+
+
+
+        // check if user qin quiz or not77
+        const quizExists = await quizModel.findQuizById(quizId)
+
+
+        if (!quizExists) {
+            return next(new ApiError('Quiz not found', 404));
+        }
+
+
+
+
+        // validate if student can pass quiz or he pass his limit atempts
+        // check if request from teacher so no need to validate limit attemps
+        if (role === 'student') {
+
+            const attemps = await attempModel.findStudentAttempBelongQuiz(quizExists.id, studentId)
+
+            if (attemps?.length >= quizExists?.attempLimit) {
+                return next(new ApiError(`you reach limit for play this QUiz`, 403));
+            }
+
+        }
+
+
+        // calculate if student win or not 
+        const win = score >= quizExists.successScore
+
+
+
+        const assignResult = await attempModel.insertAttemp(score, win, studentId, quizId)
+
+        res.status(200).json({
+            success: true,
+            message: 'result quiz assigned successfully',
+            result: assignResult
+        });
+
+    } catch (error) {
+        console.error('Error in controller:', error.message);
+        next(new ApiError(`Error: ${error.message}`, 500));
+    }
+
+
+})
