@@ -195,15 +195,20 @@ exports.updateQuiz = expressAsyncHandler(async (req, res, next) => {
 
 //@desc : this create attemp fter student finish quiz 
 exports.assignAttempToStudent = expressAsyncHandler(async (req, res, next) => {
-    const { quizId, score } = req.body
+    const { score } = req.body
+    const { id: quizId } = req.params
 
-    const { id: studentId } = req.user
+    const { id: studentId, role } = req.user
 
 
 
-
+    // TODO: check if user achive limit   play this quiiz
 
     try {
+
+
+
+
         // check if user qin quiz or not77
         const quizExists = await quizModel.findQuizById(quizId)
 
@@ -212,8 +217,26 @@ exports.assignAttempToStudent = expressAsyncHandler(async (req, res, next) => {
             return next(new ApiError('Quiz not found', 404));
         }
 
+
+
+
+        // validate if student can pass quiz or he pass his limit atempts
+        // check if request from teacher so no need to validate limit attemps
+        if (role === 'student') {
+
+            const attemps = await attempModel.findStudentAttempBelongQuiz(quizExists.id, studentId)
+
+            if (attemps?.length >= quizExists?.attempLimit) {
+                return next(new ApiError(`you reach limit for play this QUiz`, 403));
+            }
+
+        }
+
+
         // calculate if student win or not 
         const win = score >= quizExists.successScore
+
+
 
         const assignResult = await attempModel.insertAttemp(score, win, studentId, quizId)
 

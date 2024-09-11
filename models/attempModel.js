@@ -13,8 +13,9 @@ const insertAttemp = (score, win, student_id, quiz_id) => {
   });
 };
 
+
 const findStudentAttempBelongQuiz = (quizId, studentId) => {
-  console.log('inside attemp', quizId, studentId); // Log the quizId and studentId
+  console.log('inside attemp', quizId, studentId); // debugging the quizId and studentId
   return new Promise((resolve, reject) => {
     const sql = `
       SELECT * 
@@ -24,11 +25,10 @@ const findStudentAttempBelongQuiz = (quizId, studentId) => {
         AND status = 'active'
     `;
 
-    console.log('SQL Query:', sql); // Log the SQL query
 
     db.query(sql, [quizId, studentId], (err, results) => {
       if (err) {
-        console.error('SQL Error:', err.message); // Log SQL errors
+        console.error('SQL Error:', err.message);
         return reject(err);
       }
       resolve(results);
@@ -37,8 +37,41 @@ const findStudentAttempBelongQuiz = (quizId, studentId) => {
 };
 
 
+
+
+// Helper function to find the first active attempt for a student and quiz
+const findFirstActiveAttempt = (studentId, quizId) => {
+  const sql = `
+      SELECT id FROM attempts 
+      WHERE student_id = ? AND quiz_id = ? AND status = 'active'
+      ORDER BY created_at ASC LIMIT 1
+  `;
+  return new Promise((resolve, reject) => {
+    db.query(sql, [studentId, quizId], (err, results) => {
+      if (err) return reject(new Error(`Error finding active attempt: ${err.message}`));
+      resolve(results.length > 0 ? results[0].id : null);
+    });
+  });
+};
+
+
+
+// Helper function to update the status of an attempt
+const updateAttemptStatus = (attemptId, newStatus) => {
+  const sql = 'UPDATE attempts SET status = ? WHERE id = ?';
+  return new Promise((resolve, reject) => {
+    db.query(sql, [newStatus, attemptId], (err, result) => {
+      if (err) return reject(new Error(`Error updating attempt status: ${err.message}`));
+      resolve(result.affectedRows);
+    });
+  });
+};
+
+
+
 module.exports = {
-  insertAttemp, findStudentAttempBelongQuiz
+  insertAttemp, findStudentAttempBelongQuiz,
+  updateAttemptStatus, findFirstActiveAttempt
 };
 
 

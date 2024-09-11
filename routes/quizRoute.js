@@ -15,7 +15,7 @@ router.route("/student")
   .get(protect, allowedTo('student'), quizBelongStudent)
 
 
-router.route('/attemp')
+router.route('/attemp/:id')
   .post(protect, allowedTo('student'), assignAttempToStudent) //alowed only for student when pass quiz
 
 
@@ -23,6 +23,7 @@ router.route('/attemp')
 router.route('/create')
   .get(quizForm)
   .post(protect, allowedTo('teacher'), createQuiz) //alowed only for teahcer
+
 
 router.route("/:id")
   .get(protect, allowedTo('teacher', 'student'), getQuizById)

@@ -56,3 +56,61 @@ exports.studentsBelongTeacher = expressAsyncHandler(async (req, res, next) => {
 
 
 })
+
+//@desc: this func for create request to play game again after reach limit attemps 
+// Access Private : Student - teacher
+
+exports.createRequest = expressAsyncHandler(async (req, res, next) => {
+
+    const { id: idStudent } = req.user
+    const { id: idQuiz } = req.params
+    try {
+
+        const requestCreated = await studentModel.insertRequest(idStudent, idQuiz)
+
+
+        res.status(201).json({
+            success: true,
+            message: 'Request Created successfully',
+            result: requestCreated
+        });
+    } catch (error) {
+        console.error('Error in controller:', error.message);
+        next(new ApiError(`Error: ${error.message}`, 500));
+    }
+})
+
+
+//@desc: this func for create request to play game again after reach limit attemps 
+// Access Private : Student - teacher
+
+exports.updateRequestStatus = expressAsyncHandler(async (req, res, next) => {
+
+    const { status } = req.body;
+    const { id } = req.params;  // id request
+    try {
+
+
+        //TODO: check if this request is exists
+
+        const requestUpdated = await studentModel.updateRequestWithAttempt(id, status)
+
+        // check if teacher accept request 
+        // in this case 
+        //TODO: update first attemp to become deactivate
+        if (status === 'accept') {
+
+
+        }
+
+
+        res.status(201).json({
+            success: true,
+            message: 'Request Updated successfully',
+            result: requestUpdated
+        });
+    } catch (error) {
+        console.error('Error in controller:', error.message);
+        next(new ApiError(`Error: ${error.message}`, 500));
+    }
+})
