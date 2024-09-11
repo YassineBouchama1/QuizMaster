@@ -1,6 +1,7 @@
 const express = require('express');
-const { allQuiz, studentsBelongTeacher, assignQuizToStudentController, createRequest, updateRequestStatus } = require('../controllers/studentController');
+const { allQuiz, studentsBelongTeacher, assignQuizToStudentController } = require('../controllers/studentController');
 const { protect, allowedTo } = require('../middleWares/guard');
+const { createRequest, updateRequestStatus } = require('../controllers/requestController');
 
 const router = express.Router();
 
@@ -17,11 +18,11 @@ router.route('/teacher')
 router.route('/assignQuiz')
     .post(protect, allowedTo('teacher'), assignQuizToStudentController)
 
-router.route('/request') // this is make stduent to create request 
+router.route('/request/:quizId') // this is make stduent to create request 
     .post(protect, allowedTo('student'), createRequest)
 
 
-router.route('/request/:id') // this is make stduent to create request 
+router.route('/request/:quizId') // this is make stduent to create request 
     .put(protect, allowedTo('student'), updateRequestStatus)
 
 module.exports = router;

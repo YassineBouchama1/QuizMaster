@@ -1,6 +1,4 @@
 const db = require('../config/database')
-const requestModel = require('./requestModel')
-const attempModel = require('./attempModel')
 
 
 
@@ -121,62 +119,6 @@ WHERE
 
 
 
-// transactional function to update request and handle attempt deactivation
-const updateRequestWithAttempt = (requestId, status) => {
-    return new Promise((resolve, reject) => {
-
-        // Start the transaction
-        db.beginTransaction(async err => {
-            if (err) {
-                console.error('Error starting transaction:', err.message);
-
-                return reject(err);
-            }
-
-            try {
-                // Update the request status
-                const requestUpdated = await requestModel.updateRequestStatus(requestId, status);
-
-                // If the request status is accepted, handle attempt deactivation
-                if (status === 'accept') {
-                    const request = await requestModel.findRequestById(requestId);
-
-                    if (request) {
-                        const { student_id, quiz_id } = request;
-                        const attemptId = await attempModel.findFirstActiveAttempt(student_id, quiz_id);
-
-                        if (attemptId) {
-                            await updateAttemptStatus(connection, attemptId, 'deactivate');
-                        }
-                    }
-                }
-
-                // Commit the transaction
-                db.commit(err => {
-                    if (err) {
-                        console.error('Error committing transaction:', err.message);
-                        return db.rollback(() => {
-
-                            reject(err);
-                        });
-                    }
-
-                    resolve({ success: true, affectedRows: requestUpdated });
-                });
-            } catch (error) {
-                console.error('Error during transaction:', error.message);
-                // Rollback the transaction if any operation fails
-                db.rollback(() => {
-
-                    reject(error);
-                });
-            }
-        });
-    });
-
-};
-
-
 
 
 
@@ -184,7 +126,7 @@ module.exports = {
     getStudentById,
     students,
     assignQuizToStudent,
-    assignQuizToStudents,
+    assignQuizToStudents
 
-    updateRequestWithAttempt
+    
 }
