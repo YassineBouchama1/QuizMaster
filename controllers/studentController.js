@@ -21,9 +21,15 @@ exports.assignQuizToStudentController = expressAsyncHandler(async (req, res, nex
         return next(new ApiError('Invalid input: quizId and studentIds array are required', 400));
     }
 
+    //TODO: chcek if list of student belong this teacher
+
     try {
         const result = await studentModel.assignQuizToStudents(quizId, studentIds);
-        res.status(200).json(result);
+        res.status(201).json({
+            success: true,
+            message: 'Deleted successfully',
+            result: result
+        });
     } catch (error) {
         console.error('Error in controller:', error.message);
         next(new ApiError(`Failed to assign quiz: ${error.message}`, 500));

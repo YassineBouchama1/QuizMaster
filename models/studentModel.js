@@ -35,7 +35,7 @@ const assignQuizToStudents = (idQuiz, idStudents) => {
 
                 // assign quiz to eqch student
 
-                const assignPromises = uniqueStudentIds.map(async ({ id }) => await assignQuizToStudent(idQuiz, id));
+                const assignPromises = uniqueStudentIds.map(async (id) => await assignQuizToStudent(idQuiz, id));
 
                 // wait for all quiz assigned to student
                 await Promise.all(assignPromises);

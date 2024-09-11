@@ -137,20 +137,18 @@ const getAllQuizzesBelongTeacher = (idTeacher) => {
 
 
 
+
 // Get all quizzes belong student
 const getAllQuizzesBelongStudent = (idStudent) => {
   return new Promise((resolve, reject) => {
-    const sql = `SELECT q.*
-FROM quizzes q
-JOIN classes c ON q.teacher_id = c.teacher_id
-JOIN students s ON s.class_id = c.id
-WHERE s.id = ?;`;
+    const sql = `SELECT * FROM quizperstudent WHERE student_id = ?;`;
     db.query(sql, [idStudent], (err, results) => {
       if (err) return reject(err);
       else resolve(results)
     });
   })
 };
+
 
 
 
