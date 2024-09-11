@@ -65,8 +65,7 @@ exports.getRequests = expressAsyncHandler(async (req, res, next) => {
     try {
 
 
-
-        const requestUpdated = await requestModel.updateRequestWithAttempt(quizId, status)
+        const requestUpdated = await requestModel.findAllRequests(id)
 
 
         res.status(201).json({

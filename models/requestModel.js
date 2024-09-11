@@ -16,11 +16,11 @@ const findRequestById = (requestId) => {
 
 
 // hlper function to  create request for more attemp 
-const insertRequest = (idstudent, idQuiz,description) => {
+const insertRequest = (idstudent, idQuiz, description) => {
 
     return new Promise((resolve, reject) => {
         const sql = 'INSERT INTO requests (student_id, quiz_id,description) VALUES (?, ?)';
-        db.query(sql, [idstudent, idQuiz,description], (err, results) => {
+        db.query(sql, [idstudent, idQuiz, description], (err, results) => {
             if (err) {
                 return reject(new Error(`Error inserting request: ${err.message}`));
             }
@@ -34,14 +34,15 @@ const insertRequest = (idstudent, idQuiz,description) => {
 // helper function to find all requests assign to teacher
 const findAllRequests = (teacherId) => {
     const sql = `
-    SELECT requests. FROM requests 
-      LEFT JOIN quizzes  ON requests.quiz_id = quizzes.id
-      LEFT JOIN teachers an ON teachers.id = quizzes.teacher_id
+ SELECT requests.*, quizzes.title AS quiz_title
+    FROM requests
+    LEFT JOIN quizzes ON requests.quiz_id = quizzes.id
+    WHERE quizzes.teacher_id = ?;
     `;
     return new Promise((resolve, reject) => {
         db.query(sql, [teacherId], (err, results) => {
-            if (err) return reject(new Error(`Error finding request: ${err.message}`));
-            resolve(results.length > 0 ? results[0] : null);
+            if (err) return reject(new Error(`Error finding requests: ${err.message}`));
+            resolve(results.length > 0 ? results : []);
         });
     });
 };
@@ -86,7 +87,7 @@ const updateRequestWithAttempt = (requestId, status) => {
                         const attemptId = await attempModel.findFirstActiveAttempt(student_id, quiz_id);
 
                         if (attemptId) {
-                            await attempModel.updateAttemptStatus( attemptId, 'deactivate');
+                            await attempModel.updateAttemptStatus(attemptId, 'deactivate');
                         }
                     }
                 }
@@ -122,5 +123,6 @@ module.exports = {
     findRequestById,
     insertRequest,
     updateRequestStatus,
-    updateRequestWithAttempt
+    updateRequestWithAttempt,
+    findAllRequests
 }
