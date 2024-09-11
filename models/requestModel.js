@@ -16,11 +16,11 @@ const findRequestById = (requestId) => {
 
 
 // hlper function to  create request for more attemp 
-const insertRequest = (idstudent, idQuiz) => {
+const insertRequest = (idstudent, idQuiz,description) => {
 
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO requests (student_id, quiz_id) VALUES (?, ?)';
-        db.query(sql, [idstudent, idQuiz], (err, results) => {
+        const sql = 'INSERT INTO requests (student_id, quiz_id,description) VALUES (?, ?)';
+        db.query(sql, [idstudent, idQuiz,description], (err, results) => {
             if (err) {
                 return reject(new Error(`Error inserting request: ${err.message}`));
             }
@@ -28,6 +28,24 @@ const insertRequest = (idstudent, idQuiz) => {
         });
     });
 }
+
+
+
+// helper function to find all requests assign to teacher
+const findAllRequests = (teacherId) => {
+    const sql = `
+    SELECT requests. FROM requests 
+      LEFT JOIN quizzes  ON requests.quiz_id = quizzes.id
+      LEFT JOIN teachers an ON teachers.id = quizzes.teacher_id
+    `;
+    return new Promise((resolve, reject) => {
+        db.query(sql, [teacherId], (err, results) => {
+            if (err) return reject(new Error(`Error finding request: ${err.message}`));
+            resolve(results.length > 0 ? results[0] : null);
+        });
+    });
+};
+
 
 
 // helper function to update request status
