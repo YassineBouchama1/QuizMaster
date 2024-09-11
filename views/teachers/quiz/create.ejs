@@ -1,154 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/test.css" />
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Quiz</title>
-</head>
+  </head>
 
-<body>
-    <h1>Create New Quiz</h1>
-    <form id="quizForm">
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="title" required>
+  <body>
+    
+    <div class="divat">
+      <div class="quizzForm">
+        <!-- <h1>Create New Quiz</h1> -->
 
-        <label for="description">Description:</label>
-        <textarea id="description" name="description" rows="4" required></textarea>
+        <form id="quizForm">
+          <label for="title">Title:</label>
+          <input type="text" id="title" name="title" required />
 
-        <label for="viewAnswers">View Answers:</label>
-        <input type="checkbox" id="viewAnswers" name="viewAnswers">
+          <label for="description">Description:</label>
+          <textarea
+            id="description"
+            name="description"
+            rows="4"
+            required
+          ></textarea>
 
-        <label for="seeResult">See Result:</label>
-        <input type="checkbox" id="seeResult" name="seeResult">
+          <div class="items">
+            <div>
+              <label for="viewAnswers">View Answers:</label>
+              <input type="checkbox" id="viewAnswers" name="viewAnswers" />
+            </div>
 
-        <label for="successScore">Success Score:</label>
-        <input type="number" step="0.01" id="successScore" name="successScore" value="0.0">
+            <div>
+              <label for="seeResult">See Result:</label>
+              <input type="checkbox" id="seeResult" name="seeResult" />
+            </div>
+          </div>
 
-        <label for="status">Status:</label>
-        <select id="status" name="status">
+          <label for="successScore">Success Score:</label>
+          <input
+            type="number"
+            step="0.01"
+            id="successScore"
+            name="successScore"
+            value="0.0"
+          />
+
+          <label for="status">Status:</label>
+          <select id="status" name="status">
             <option value="draft" selected>Draft</option>
             <option value="published">Published</option>
             <option value="archived">Archived</option>
-        </select>
+          </select>
 
-        <h3>Questions</h3>
-        <div id="questionsContainer">
-
-        </div>
-        <button type="button" onclick="addQuestion()">Add Question</button>
-
-        <button type="submit">Create Quiz</button>
-    </form>
-
-    <div id="loadingIndicator" style="display: none;">Creating quiz...</div>
-    <div id="resultMessage"></div>
-
+          <button type="submit">Create Quiz</button>
+        </form>
+      </div>
+      <div class="questionForm">
+        <h3 style="text-align: center;">Questions</h3>
+        <form id="questionsForm">
+          <div id="questionsContainer"></div>
+          <button type="button" onclick="addQuestion()">Add Question</button>
+        </form>
+      </div>
+      <div id="loadingIndicator" style="display: none">Creating quiz...</div>
+      <div id="resultMessage"></div>
+    </div>
     <script>
-        const quizForm = document.getElementById('quizForm');
+      const quizForm = document.getElementById("quizForm");
+      const questionsForm = document.getElementById("questionsForm");
 
+      function addQuestion() {
+        const container = document.getElementById("questionsContainer");
+        const index = container.children.length;
 
-        // this function is for build question inputs
-        function addQuestion() {
-            //container questions
-            const container = document.getElementById('questionsContainer');
-            const index = container.children.length;
+        const questionDiv = document.createElement("div");
+        questionDiv.innerHTML = `
+          <h4>Question ${index + 1}</h4>
+          <label for="questionText_${index}">Question Text:</label>
+          <input type="text" id="questionText_${index}" name="questions[${index}][text]" required>
 
-            //div that contain inputs question question
-            const questionDiv = document.createElement('div');
+          <label for="questionPoints_${index}">Number of Points:</label>
+          <input type="number" step="0.01" id="questionPoints_${index}" name="questions[${index}][numberOfPoints]" value="0.0" required>
 
-            // insert inputs quition
-            questionDiv.innerHTML = `
-                <h4>Question ${index + 1}</h4>
-                <label for="questionText_${index}">Question Text:</label>
-                <input type="text" id="questionText_${index}" name="questions[${index}][text]" required>
+          <label for="questionAnswer_${index}">Answer:</label>
+          <input type="text" id="questionAnswer_${index}" name="questions[${index}][answer]" required>
+          <hr>
+        `;
+        container.appendChild(questionDiv);
+      }
 
-                <label for="questionPoints_${index}">Number of Points:</label>
-                <input type="number" step="0.01" id="questionPoints_${index}" name="questions[${index}][numberOfPoints]" value="0.0" required>
+      quizForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
 
-                <label for="questionAnswer_${index}">Answer:</label>
-                <input type="text" id="questionAnswer_${index}" name="questions[${index}][answer]" required>
-                <hr>
-            `;
-            container.appendChild(questionDiv);
+        const form = this;
+        const loadingIndicator = document.getElementById("loadingIndicator");
+        const resultMessage = document.getElementById("resultMessage");
+        const submitButton = form.querySelector('button[type="submit"]');
+
+        loadingIndicator.style.display = "block";
+        resultMessage.textContent = "";
+        submitButton.disabled = true;
+
+        const token = localStorage.getItem("token") || null;
+
+        if (!token) {
+          resultMessage.textContent = "There is no token";
+          loadingIndicator.style.display = "none";
+          return;
         }
 
+        try {
+          const formData = new FormData(form);
+          const data = {};
 
-        quizForm.addEventListener('submit', async function (e) {
-            e.preventDefault();
-
-            const form = this;
-            const loadingIndicator = document.getElementById('loadingIndicator');
-            const resultMessage = document.getElementById('resultMessage');
-            const submitButton = form.querySelector('button[type="submit"]');
-
-            // show loading and disable submit button
-            loadingIndicator.style.display = 'block';
-            resultMessage.textContent = '';
-            submitButton.disabled = true;
-
-            // get token from localStorage
-            const token = localStorage.getItem('token') || null;
-
-            // if there is no token
-            if (!token) {
-                resultMessage.textContent = 'There is no token';
-                loadingIndicator.style.display = 'none';
-                return;
+          formData.forEach((value, key) => {
+            if (key === "viewAnswers" || key === "seeResult") {
+              data[key] = formData.get(key) === "on";
+            } else if (key === "successScore") {
+              data[key] = parseFloat(formData.get(key)) || 0.0;
+            } else {
+              data[key] = formData.get(key);
             }
+          });
 
-            try {
-                // collect data from FORM
-                const formData = new FormData(form);
-                const data = {};
+          const response = await fetch("/quiz/create", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(data),
+          });
 
-                formData.forEach((value, key) => {
-                    if (key.startsWith('questions')) {
-                        const [_, index, field] = key.match(/^questions\[(\d+)\]\[(\w+)\]$/);
-                        if (!data.questions) data.questions = [];
-                        if (!data.questions[index]) data.questions[index] = {};
-                        data.questions[index][field] = value;
-                    } else if (key === 'viewAnswers' || key === 'seeResult') {
-                        data[key] = formData.get(key) === 'on';
-                    } else if (key === 'successScore') {
-                        data[key] = parseFloat(formData.get(key)) || 0.0;
-                    } else {
-                        data[key] = formData.get(key);
-                    }
-                });
-                console.log(data)
-                // send request to API
-                const response = await fetch('/quiz/create', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify(data)
-                });
+          const responseData = await response.json();
 
-                const responseData = await response.json();
+          if (!response.ok) {
+            throw new Error(responseData.message || "Server error");
+          }
 
-                if (!response.ok) {
-                    throw new Error(responseData.message || 'Server error');
-                }
+          if (responseData.success) {
+            resultMessage.textContent = responseData.message;
+            form.reset();
+          } else {
+            throw new Error(responseData.message || "Unknown error occurred");
+          }
+        } catch (error) {
+          resultMessage.textContent = `Error: ${error.message}`;
+        } finally {
+          loadingIndicator.style.display = "none";
+          submitButton.disabled = false;
+        }
+      });
 
-                if (responseData.success) {
-                    resultMessage.textContent = responseData.message;
-                    form.reset(); // clear the form
-                    document.getElementById('questionsContainer').innerHTML = ''; // clear questions
-                } else {
-                    throw new Error(responseData.message || 'Unknown error occurred');
-                }
-            } catch (error) {
-                resultMessage.textContent = `Error: ${error.message}`;
-            } finally {
-                // hide loading and re-enable submit button
-                loadingIndicator.style.display = 'none';
-                submitButton.disabled = false;
+      questionsForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const form = this;
+        const loadingIndicator = document.getElementById("loadingIndicator");
+        const resultMessage = document.getElementById("resultMessage");
+        const submitButton = form.querySelector('button[type="submit"]');
+
+        loadingIndicator.style.display = "block";
+        resultMessage.textContent = "";
+        submitButton.disabled = true;
+
+        const token = localStorage.getItem("token") || null;
+
+        if (!token) {
+          resultMessage.textContent = "There is no token";
+          loadingIndicator.style.display = "none";
+          return;
+        }
+
+        try {
+          const formData = new FormData(form);
+          const data = {};
+
+          formData.forEach((value, key) => {
+            if (key.startsWith("questions")) {
+              const [_, index, field] = key.match(
+                /^questions\[(\d+)\]\[(\w+)\]$/
+              );
+              if (!data.questions) data.questions = [];
+              if (!data.questions[index]) data.questions[index] = {};
+              data.questions[index][field] = value;
             }
-        });
+          });
+
+          const response = await fetch("/questions/add", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(data),
+          });
+
+          const responseData = await response.json();
+
+          if (!response.ok) {
+            throw new Error(responseData.message || "Server error");
+          }
+
+          if (responseData.success) {
+            resultMessage.textContent = responseData.message;
+            form.reset();
+            document.getElementById("questionsContainer").innerHTML = "";
+          } else {
+            throw new Error(responseData.message || "Unknown error occurred");
+          }
+        } catch (error) {
+          resultMessage.textContent = `Error: ${error.message}`;
+        } finally {
+          loadingIndicator.style.display = "none";
+          submitButton.disabled = false;
+        }
+      });
     </script>
-</body>
-
+  </body>
 </html>

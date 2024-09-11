@@ -1,82 +1,221 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz App</title>
+    <link rel="stylesheet" href="/css/student.css" />
+  </head>
+  <body>
+    <h1 class="logo">JsSmartExam</h1>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Teachers List</title>
-</head>
+    <div class="content">
+      <div class="profile">
+        <img src="/images/profile.jpg" alt="" />
+        <div>
+          <div class="info">
+            <h1>Hamliri Sanaa</h1>
+            <p>hamlirisanaa@gmail.com</p>
+          </div>
+          <div class="line"></div>
+          <div class="stats">
+            <div class="state">
+              <div class="icons">
+                <svg
+                  class="w-6 h-6 text-gray-800 dark:text-white"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </div>
+              <div class="items">
+                <h1>27</h1>
+                <p>Quiz Added</p>
+              </div>
+            </div>
 
-<body id="root">
-  <h1>Teachers Dashboard</h1>
+            <div class="state">
+              <div class="icons">
+                <svg
+                  class="w-6 h-6 text-blue-600"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M13.09 3.294c1.924.95 3.422 1.69 5.472.692a1 1 0 0 1 1.438.9v9.54a1 1 0 0 1-.562.9c-2.981 1.45-5.382.24-7.25-.701a38.739 38.739 0 0 0-.622-.31c-1.033-.497-1.887-.812-2.756-.77-.76.036-1.672.357-2.81 1.396V21a1 1 0 1 1-2 0V4.971a1 1 0 0 1 .297-.71c1.522-1.506 2.967-2.185 4.417-2.255 1.407-.068 2.653.453 3.72.967.225.108.443.216.655.32Z"
+                  />
+                </svg>
+              </div>
+              <div class="items">
+                <h1>27</h1>
+                <p>Quiz Passed</p>
+              </div>
+            </div>
 
-  <div id="loading" style="display: block;">Loading...</div>
-  <div id="resultMessage"></div>
+            <div class="state">
+              <a href="/quiz/create">
+                <div class="icons">+</div>
+              </a>
+              <div class="items">
+                <h1></h1>
+                <p>Add Quiz</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-  <h2 id="email"></h2>
+      <h1>Quizes List</h1>
 
+      <div class="quizzes">
+        <div
+          class="quiz-card"
+          style="
+            background-image: url(/images/cover-page--scaled.jpg);
+            background-position: center;
+            background-size: cover;
+          "
+        >
+          <div class="quiz-num">
+            <div
+              class="teacher-name"
+              style="
+                background-color: rgba(12, 30, 192, 0.5);
+                backdrop-filter: blur20px;
+                -webkit-backdrop-filter: blur20px;
+              "
+            >
+              <p>Quizz title : title</p>
+            </div>
+          </div>
+        </div>
 
+        <div
+          class="quiz-card"
+          style="
+            background-image: url(/images/cover-page--scaled.jpg);
+            background-position: center;
+            background-size: cover;
+          "
+        >
+          <div class="quiz-num">
+            <div
+              class="teacher-name"
+              style="
+                background-color: rgba(12, 30, 192, 0.5);
+                backdrop-filter: blur20px;
+                -webkit-backdrop-filter: blur20px;
+              "
+            >
+              <p>Quizz title : title</p>
+            </div>
+          </div>
+        </div>
 
-  <script>
+        <div
+          class="quiz-card"
+          style="
+            background-image: url(/images/cover-page--scaled.jpg);
+            background-position: center;
+            background-size: cover;
+          "
+        >
+          <div class="quiz-num">
+            <div
+              class="teacher-name"
+              style="
+                background-color: rgba(12, 30, 192, 0.5);
+                backdrop-filter: blur20px;
+                -webkit-backdrop-filter: blur20px;
+              "
+            >
+              <p>Quizz title : title</p>
+            </div>
+          </div>
+        </div>
 
+        <div
+          class="quiz-card"
+          style="
+            background-image: url(/images/cover-page--scaled.jpg);
+            background-position: center;
+            background-size: cover;
+          "
+        >
+          <div class="quiz-num">
+            <div
+              class="teacher-name"
+              style="
+                background-color: rgba(12, 30, 192, 0.5);
+                backdrop-filter: blur20px;
+                -webkit-backdrop-filter: blur20px;
+              "
+            >
+              <p>Quizz title : title</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      window.addEventListener("load", async () => {
+        const root = document.getElementById("root");
+        const emailElement = document.getElementById("email");
 
+        const loading = document.getElementById("loading");
+        const resultMessage = document.getElementById("resultMessage");
+        resultMessage.textContent = "";
+        //get token from localhost
+        const token = localStorage.getItem("token") || null;
 
-    window.addEventListener('load', async () => {
-      const root = document.getElementById('root')
-      const emailElement = document.getElementById('email')
-
-      const loading = document.getElementById('loading');
-      const resultMessage = document.getElementById('resultMessage');
-      resultMessage.textContent = '';
-      //get token from localhost
-      const token = localStorage.getItem('token') || null
-
-      console.log(token)
-      // if there is no token 
-      if (!token) {
-        resultMessage.textContent = 'there is no token';
-        loading.style.display = 'none';
-        return;
-      }
-
-
-      try {
-
-        //fetch data
-        const response = await fetch('/teachers/me', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          }
-
-        });
-
-
-        const responseData = await response.json()
-        console.log(responseData)
-        if (responseData.error) {
-          throw new Error(responseData.message || 'Server error');
+        console.log(token);
+        // if there is no token
+        if (!token) {
+          resultMessage.textContent = "there is no token";
+          loading.style.display = "none";
+          return;
         }
 
+        try {
+          //fetch data
+          const response = await fetch("/teachers/me", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          });
 
-        // append data to html
+          const responseData = await response.json();
+          console.log(responseData);
+          if (responseData.error) {
+            throw new Error(responseData.message || "Server error");
+          }
 
+          // append data to html
 
-        emailElement.textContent = responseData.teacher.email
-
-      } catch (error) {
-        console.log('Error:', error);
-        resultMessage.textContent = `Error: ${error.message}`;
-      } finally {
-        // disable loading
-        loading.style.display = 'none';
-      }
-
-
-
-    })
-  </script>
-</body>
-
+          emailElement.textContent = responseData.teacher.email;
+        } catch (error) {
+          console.log("Error:", error);
+          resultMessage.textContent = `Error: ${error.message}`;
+        } finally {
+          // disable loading
+          loading.style.display = "none";
+        }
+      });
+    </script>
+  </body>
 </html>

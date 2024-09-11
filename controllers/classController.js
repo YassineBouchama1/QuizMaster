@@ -24,10 +24,6 @@ exports.createClass = expressAsyncHandler(async (req, res, next) => {
         return next(new ApiError('filed is missing ', 400));
     }
 
-
-
-
-
     try {
 
         // check if teacher has already class

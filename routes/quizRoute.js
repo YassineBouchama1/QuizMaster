@@ -1,7 +1,8 @@
 const express = require('express');
 
+const { protect, allowedTo } = require('../middlewares/guard');
 const { createQuiz, quizForm, getQuizById, getAllQuizForTeacher, deleteQuiz, updateQuiz, quizBelongStudent, assignAttempToStudent } = require('../controllers/quizController');
-const { protect, allowedTo } = require('../middleWares/guard');
+
 
 const router = express.Router();
 
