@@ -1,7 +1,5 @@
 const express = require('express');
 const {
-
-
   dashboardTeacher,
   getTeacher,
 } = require('../controllers/teacherController');
@@ -11,7 +9,7 @@ const router = express.Router();
 
 router.route('/')
   .get(dashboardTeacher)
-
+  
 
 
 router.route('/me')
