@@ -32,19 +32,18 @@ const insertRequest = (idstudent, idQuiz, description) => {
 
 
 
-// helper function to find all requests assign to teacher
 const findAllRequests = (teacherId) => {
-
- SELECT requests.*, quizzes.title AS quiz_title
+    const sql = `
+    SELECT requests.*, quizzes.title AS quiz_title
     FROM requests
     LEFT JOIN quizzes ON requests.quiz_id = quizzes.id
     WHERE quizzes.teacher_id = ?;
     `;
+    
     return new Promise((resolve, reject) => {
         db.query(sql, [teacherId], (err, results) => {
             if (err) return reject(new Error(`Error finding requests: ${err.message}`));
             resolve(results.length > 0 ? results : []);
-
         });
     });
 };
