@@ -32,3 +32,4 @@ exports.createSubject = async (req, res) => {
         res.status(500).send('Error Creating Subject');
     }
 }
+exports.addSubSubject = async (req, res) => res.render('teachers/subjects/addSubSubject');
