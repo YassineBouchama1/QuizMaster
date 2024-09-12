@@ -11,16 +11,19 @@ const JWT_SECRET = process.env.JWT_SECRET
 exports.protect = expressAsyncHandler(async (req, res, next) => {
 
     //1 check if token exist 
-    let token;
-    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-        token = req.headers.authorization.split(' ')[1]
-    }
+    // let token;
+    // if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    //     token = req.headers.authorization.split(' ')[1]
+    // }
+
+
+    // instead use cookies
+    const token = req.cookies.token;
+    console.log(token)
 
     if (!token) {
         return next(new ApiError('you are not login , plase login to get access  this route', 400))
     }
-
-
     //2) decoded Token 
     const decoded = jwt.verify(token, JWT_SECRET)
 

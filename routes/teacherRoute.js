@@ -3,12 +3,12 @@ const {
   dashboardTeacher,
   getTeacher,
 } = require('../controllers/teacherController');
-const { protect } = require('../middlewares/guard');
+const { protect, allowedTo } = require('../middlewares/guard');
 
 const router = express.Router();
 
 router.route('/')
-  .get(dashboardTeacher)
+  .get(protect, dashboardTeacher)
 
 
 router.route('/me')

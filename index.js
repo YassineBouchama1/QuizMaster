@@ -11,13 +11,15 @@ const subjectRouter = require('./routes/subjectRouter');
 const requestRouter = require('./routes/requestRoute');
 
 
-const globalError = require('./middlewares/globalError')
+const globalError = require('./middlewares/globalError');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 
 // Middleware
+app.use(cookieParser()); // give u abilite to access cookies
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));

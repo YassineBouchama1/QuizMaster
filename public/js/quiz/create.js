@@ -35,16 +35,16 @@ quizForm.addEventListener('submit', async function (e) {
     submitButton.disabled = true;
 
 
-    //get token from localhost
-    const token = localStorage.getItem('token') || null
+    // //get token from localhost
+    // const token = localStorage.getItem('token') || null
 
-    console.log(token)
-    // if there is no token 
-    if (!token) {
-        resultMessage.textContent = 'there is no token';
-        loading.style.display = 'none';
-        return;
-    }
+    // console.log(token)
+    // // if there is no token 
+    // if (!token) {
+    //     resultMessage.textContent = 'there is no token';
+    //     loading.style.display = 'none';
+    //     return;
+    // }
 
 
 
@@ -60,15 +60,15 @@ quizForm.addEventListener('submit', async function (e) {
         });
     }
 
-    
+
     formData.set('questions', JSON.stringify(questions));
 
     try {
         const response = await fetch('/quiz/create', {
             method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            },
+            // headers: {
+            //     'Authorization': `Bearer ${token}`
+            // },
             body: formData,
         });
 

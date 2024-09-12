@@ -6,19 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Create Teacher</title>
     <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/css/Auth.css">
     <link rel="stylesheet" href="/css/style.css">
 
-   
-  </head>
+
+</head>
 
 <body>
     <header>
@@ -34,26 +28,26 @@
             </div>
         </div>
     </header>
-        <div class="background">
-          <div class="shape"></div>
-          <div class="shape"></div>
-        </div>
-        <form id="loginForm">
-          <h3>Have An Account</h3>
-    
-          
-          <label for="email">Email</label>
-          <input type="text" placeholder="email" id="email" name="email" required />
-    
+    <div class="background">
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    <form id="loginForm">
+        <h3>Have An Account</h3>
 
-          <label for="password">Password</label>
-          <input type="text" placeholder="password" id="password" name="password" required />
-    
 
-          <button type="submit">Log In</button>
-        </form>
-        <div id="loadingIndicator" style="display: none">Creating teacher...</div>
-        <div id="resultMessage"></div>
+        <label for="email">Email</label>
+        <input type="text" placeholder="email" id="email" name="email" required />
+
+
+        <label for="password">Password</label>
+        <input type="text" placeholder="password" id="password" name="password" required />
+
+
+        <button type="submit">Log In</button>
+    </form>
+    <div id="loadingIndicator" style="display: none">Creating teacher...</div>
+    <div id="resultMessage"></div>
 
     <script>
 
@@ -106,8 +100,8 @@
                     resultMessage.textContent = responseData.message;
                     form.reset(); // clear the form
 
-                    responseData.role === 'teacher' ?   window.location.replace('/teachers'):  window.location.replace('/students');
-                  
+                    responseData.role === 'teacher' ? window.location.replace('/teachers') : window.location.replace('/students');
+
 
                 } else {
                     throw new Error(responseData.message || 'Unknown error occurred');
