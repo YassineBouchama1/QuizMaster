@@ -38,6 +38,7 @@ exports.Tables = [
       text VARCHAR(255) NOT NULL,
       quiz_id INT,
       numberOfPoints FLOAT DEFAULT 0.0,
+      image TEXT NULL,
       deleted_at TIMESTAMP NULL DEFAULT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
           FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE CASCADE
@@ -106,7 +107,7 @@ FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE SET NULL,
 FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE SET NULL
 );
 `
-,
+  ,
   `
 CREATE TABLE IF NOT EXISTS requests (
 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -120,7 +121,7 @@ FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE SET NULL,
 FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE SET NULL
 );
 `,
-    `
+  `
   CREATE TABLE IF NOT EXISTS subjects (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL UNIQUE,

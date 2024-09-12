@@ -11,7 +11,8 @@ exports.quizForm = (req, res) => res.render('teachers/quiz/create');
 // @ACCESS: Private
 exports.createQuiz = expressAsyncHandler(async (req, res, next) => {
     const { id: teacher_id } = req.user;
-    const { title, description, viewAnswers, seeResult, successScore, status, attempLimit, questions } = req.body;
+    const { title, description, viewAnswers, seeResult, successScore, status, attempLimit } = req.body;
+    let questions = JSON.parse(req.body.questions);
 
     // simple validation
     if (!title || !attempLimit) {
@@ -23,17 +24,26 @@ exports.createQuiz = expressAsyncHandler(async (req, res, next) => {
         return next(new ApiError('At least one question is required', 400));
     }
 
+
+    // Process uploaded files and add file paths to questions
+    req.files.forEach((file, index) => {
+        if (questions[index]) {
+            questions[index].imagePath = `/uploads/${file.filename}`;
+        }
+    });
+
+
     //create array of questions from request body
     const questionData = questions.map(question => ({
         text: question.text,
         numberOfPoints: question.numberOfPoints,
-        answerText: question.answer
+        answerText: question.answer,
+        imagePath: question.imagePath || null
     }));
-
     try {
         // ue the addQuizWithQuestions func to insert quiz and questions in one transaction
         const quizCreated = await new Promise((resolve, reject) => {
-            quizModel.addQuizWithQuestions(title, description, teacher_id, attempLimit, viewAnswers, seeResult, successScore, status, questionData, (err, result) => {
+            quizModel.addQuizWithQuestions(title, description, teacher_id, parseInt(attempLimit), viewAnswers === 'on', seeResult === 'on', successScore, status, questionData, (err, result) => {
                 if (err) {
                     return reject(err);
                 }

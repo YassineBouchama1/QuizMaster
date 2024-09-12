@@ -6,6 +6,7 @@ const answerModel = require('./answerModel')
 // add a new quiz along with its questions and answers in a single transaction
 const addQuizWithQuestions = (title, description, teacher_id, attempLimit, viewAnswers, seeResult, successScore, status, questions, callback) => {
   console.log(questions)
+  console.log(viewAnswers, seeResult)
   db.beginTransaction(async err => {
     if (err) {
       console.error('Error starting transaction:', err.message);
@@ -17,8 +18,8 @@ const addQuizWithQuestions = (title, description, teacher_id, attempLimit, viewA
       const quizId = await insertQuiz(title, description, teacher_id, attempLimit, viewAnswers, seeResult, successScore, status);
 
       // insert questions and their answers
-      const questionPromises = questions.map(async ({ text, numberOfPoints, answerText }) => {
-        const questionId = await questionModel.insertQuestion(quizId, text, numberOfPoints);
+      const questionPromises = questions.map(async ({ text, numberOfPoints, answerText, imagePath }) => {
+        const questionId = await questionModel.insertQuestion(quizId, text, numberOfPoints, imagePath);
         await answerModel.insertAnswer(questionId, answerText);
       });
 

@@ -55,7 +55,7 @@ exports.signUpTeacherApi = expressAsyncHandler(async (req, res, next) => {
         });
 
 
-        console.log(existingUser)
+        
         if (existingUser) {
             return next(new ApiError('Email already existsin use', 400));
         }
