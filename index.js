@@ -8,6 +8,7 @@ const classRouter = require('./routes/classRoute');
 const studentRouter = require('./routes/studentRoute');
 const homeRouter = require('./routes/homeRouter');
 const subjectRouter = require('./routes/subjectRouter');
+const requestRouter = require('./routes/requestRoute');
 
 
 const globalError = require('./middlewares/globalError')
@@ -36,6 +37,7 @@ app.use('/quiz', quizRouter);
 app.use('/class', classRouter);
 app.use('/students', studentRouter);
 app.use('/subject', subjectRouter);
+app.use('/request', requestRouter);
 
 
 
