@@ -21,6 +21,7 @@ const insertRequest = (idstudent, idQuiz, description) => {
     return new Promise((resolve, reject) => {
         const sql = 'INSERT INTO requests (student_id, quiz_id,description) VALUES (?, ?)';
         db.query(sql, [idstudent, idQuiz, description], (err, results) => {
+
             if (err) {
                 return reject(new Error(`Error inserting request: ${err.message}`));
             }
@@ -31,14 +32,14 @@ const insertRequest = (idstudent, idQuiz, description) => {
 
 
 
-// helper function to find all requests assign to teacher
 const findAllRequests = (teacherId) => {
     const sql = `
- SELECT requests.*, quizzes.title AS quiz_title
+    SELECT requests.*, quizzes.title AS quiz_title
     FROM requests
     LEFT JOIN quizzes ON requests.quiz_id = quizzes.id
     WHERE quizzes.teacher_id = ?;
     `;
+    
     return new Promise((resolve, reject) => {
         db.query(sql, [teacherId], (err, results) => {
             if (err) return reject(new Error(`Error finding requests: ${err.message}`));

@@ -1,0 +1,115 @@
+body {
+    padding: 0px;
+    margin: 0px;
+}
+.logo {
+    color: #1936f1;
+    font-size: 30px;
+}
+nav {
+    display: flex;
+    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 5px 100px;
+    box-shadow: 0px 3px 20px rgb(179, 173, 173);
+}
+nav ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    list-style: none;
+    text-decoration: none;
+}
+nav ul li {
+    color: black;
+    cursor: pointer;
+}
+.signOut {
+    background-color: red;
+    color: white;
+    padding: 14px 50px;
+    border-radius: 10px;
+    border: none;
+}
+.signOut:hover {
+    background-color: rgb(219, 56, 56);
+    transition-duration: 0.5s;
+    cursor: pointer;
+}
+
+.subSubject{
+    border-radius: 10px;
+    width: 30%;
+    background-color: rgb(255, 255, 255);
+    padding: 107px 10px;
+    box-shadow: 0px 3px 20px rgb(179, 173, 173);
+}
+.subSubject h1 {
+    text-align: center;
+}
+.form {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0px;
+}
+.form input {
+    padding: 7px 0px;
+    
+}
+.send {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    padding: 10px 60px;
+    background-color: blue;
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+}
+.send:hover {
+    background-color: rgb(88, 88, 247);
+    transition-duration: 0.5S;
+}
+
+.line {
+    height: 500px;
+    background-color: #d4d4d4;
+    width: 2px;
+}
+.floating-stack {
+    color: #fff;
+    height: 300px;
+    width: 100%;
+    border-radius: 1rem;
+    overflow-y: auto;
+  }
+  
+  .floating-stack > dl {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; /* Adds spacing between countries */
+  }
+  
+  .floating-stack dd {
+    margin: 0;
+    padding: 0.75rem;
+    background-color:rgb(216, 224, 230); /* Background for each country */
+    color: #000000;
+    border-radius: 0.5rem;
+    text-align: left;
+  }
+  
+  .subject {
+    border-radius: 10px;
+    width: 30%;
+    background-color: rgb(255, 255, 255);
+    padding: 20px;
+    box-shadow: 0px 3px 20px rgb(173, 177, 179);
+  }
+  

@@ -2,8 +2,10 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/test.css" />
+
     <title>Create Quiz</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -17,14 +19,20 @@
         <label for="description">Description:</label>
         <textarea id="description" name="description" rows="4" required></textarea>
 
-        <label for="viewAnswers">View Answers:</label>
-        <input type="checkbox" id="viewAnswers" name="viewAnswers">
+        <div class="items">
+            <div>
+                <label for="viewAnswers">View Answers:</label>
+                <input type="checkbox" id="viewAnswers" name="viewAnswers" />
+            </div>
 
-        <label for="seeResult">See Result:</label>
-        <input type="checkbox" id="seeResult" name="seeResult">
+            <div>
+                <label for="seeResult">See Result:</label>
+                <input type="checkbox" id="seeResult" name="seeResult" />
+            </div>
+        </div>
 
         <label for="successScore">Success Score:</label>
-        <input type="number" step="0.01" id="successScore" name="successScore" value="0.0">
+        <input type="number" step="0.01" id="successScore" name="successScore" value="0.0" />
 
         <label for="status">Status:</label>
         <select id="status" name="status">
