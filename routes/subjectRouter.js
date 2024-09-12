@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { subjectForm, createSubject, addSubSubject } = require('../controllers/subjectController');
+const { subjectForm, createSubject, addSubSubject, getSubjectDetails, createSubSubject } = require('../controllers/subjectController');
     
 const router = express.Router();
 
@@ -9,7 +9,9 @@ const router = express.Router();
 .post(createSubject);
 
 router.route('/addSubSubject')
-.get(addSubSubject);
+.get(addSubSubject)
+.post(createSubSubject);
 
+router.get('/:id', getSubjectDetails);
 module.exports = router;
 
