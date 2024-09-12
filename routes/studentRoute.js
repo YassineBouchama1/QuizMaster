@@ -1,11 +1,11 @@
 const express = require('express');
-const { allQuiz, studentsBelongTeacher, assignQuizToStudentController } = require('../controllers/studentController');
+const { studentDashboard, studentsBelongTeacher, assignQuizToStudentController } = require('../controllers/studentController');
 const { protect, allowedTo } = require('../middlewares/guard');
 
 const router = express.Router();
 
 router.route('/')
-    .get(allQuiz);
+    .get(protect,allowedTo('student'),studentDashboard);
 
 
 

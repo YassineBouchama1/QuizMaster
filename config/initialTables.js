@@ -50,6 +50,7 @@ exports.Tables = [
       id INT AUTO_INCREMENT PRIMARY KEY,
       text VARCHAR(255) NOT NULL,
       question_id INT,
+      isCorrect BOOLEAN DEFAULT FALSE,
       deleted_at TIMESTAMP NULL DEFAULT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (question_id) REFERENCES questions(id) ON DELETE CASCADE

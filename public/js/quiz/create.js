@@ -15,6 +15,14 @@ function addQuestion() {
         <label for="questionAnswer_${questionCount}">Answer:</label>
         <input type="text" id="questionAnswer_${questionCount}" name="questionAnswer_${questionCount}" required>
 
+          <label for="questionOption1${questionCount}">Option 1:</label>
+        <input type="text" id="questionOption1${questionCount}" name="questionOption1${questionCount}" required>
+
+          <label for="questionOption2${questionCount}">Option 2:</label>
+        <input type="text" id="questionOption2${questionCount}" name="questionOption2${questionCount}" required>
+
+           <label for="questionOption3${questionCount}">Option 3:</label>
+        <input type="text" id="questionOption3${questionCount}" name="questionOption3${questionCount}" required>
         <label for="questionImage_${questionCount}">Image:</label>
         <input type="file" id="questionImage_${questionCount}" name="questionImages" accept="image/*">
         <hr>
@@ -56,7 +64,25 @@ quizForm.addEventListener('submit', async function (e) {
         questions.push({
             text: formData.get(`questionText_${i}`),
             numberOfPoints: formData.get(`questionPoints_${i}`),
-            answer: formData.get(`questionAnswer_${i}`)
+            answers: [
+                {
+                    text: formData.get(`questionAnswer_${i}`),
+                    isCorrect: true
+                },
+                {
+                    text: formData.get(`questionOption1${i}`),
+                    isCorrect: false
+                },
+                {
+                    text: formData.get(`questionOption2${i}`),
+                    isCorrect: false
+                },
+                {
+                    text: formData.get(`questionOption3${i}`),
+                    isCorrect: false
+                }
+            ]
+
         });
     }
 
@@ -79,6 +105,7 @@ quizForm.addEventListener('submit', async function (e) {
             quizForm.reset();
             questionsContainer.innerHTML = '';
             questionCount = 0;
+            window.location.replace('/teachers')
         } else {
             throw new Error(data.message || 'Error creating quiz');
         }

@@ -4,8 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quiz App</title>
+  <title>Teacher Dashboard</title>
   <link rel="stylesheet" href="/css/student.css" />
+  <link rel="stylesheet" href="/css/teacher/dashboard.css" />
 </head>
 
 <body>
@@ -16,8 +17,13 @@
       <img src="/images/profile.jpg" alt="" />
       <div>
         <div class="info">
-          <h1>Hamliri Sanaa</h1>
-          <p>hamlirisanaa@gmail.com</p>
+          <h1>
+            <%= user.firstName %>
+              <%= user.lastName %>
+          </h1>
+          <p>
+            <%= user.email %>
+          </p>
         </div>
         <div class="line"></div>
         <div class="stats">
@@ -63,121 +69,65 @@
       </div>
     </div>
 
-    <h1>Quizes List</h1>
+    <h1>Quizzes List</h1>
 
     <div class="quizzes">
-      <div class="quiz-card" style="
-            background-image: url(/images/cover-page--scaled.jpg);
-            background-position: center;
-            background-size: cover;
-          ">
-        <div class="quiz-num">
-          <div class="teacher-name" style="
-                background-color: rgba(12, 30, 192, 0.5);
-                backdrop-filter: blur20px;
-                -webkit-backdrop-filter: blur20px;
-              ">
-            <p>Quizz title : title</p>
-          </div>
-        </div>
-      </div>
+      <% if (quizzes && quizzes.length> 0) { %>
+        <% quizzes.forEach(quiz=> { %>
+          <div class="quiz-card"
+            style="background-image: url('<%= quiz.question_image %>'); background-position: center; background-size: cover;">
 
-      <div class="quiz-card" style="
-            background-image: url(/images/cover-page--scaled.jpg);
-            background-position: center;
-            background-size: cover;
-          ">
-        <div class="quiz-num">
-          <div class="teacher-name" style="
-                background-color: rgba(12, 30, 192, 0.5);
-                backdrop-filter: blur20px;
-                -webkit-backdrop-filter: blur20px;
-              ">
-            <p>Quizz title : title</p>
-          </div>
-        </div>
-      </div>
+            <div class="quiz-num">
+              <div class="teacher-name" style="
+                    background-color: rgba(12, 30, 192, 0.5);
+                    backdrop-filter: blur(20px);
+                    -webkit-backdrop-filter: blur(20px);
+                  ">
+                <p>
+                  <%= quiz.title %>
+                </p>
+                <button class="delete-btn" onclick="onDeleteQuiz('<%= quiz.quiz_id %>')">Delete</button>
 
-      <div class="quiz-card" style="
-            background-image: url(/images/cover-page--scaled.jpg);
-            background-position: center;
-            background-size: cover;
-          ">
-        <div class="quiz-num">
-          <div class="teacher-name" style="
-                background-color: rgba(12, 30, 192, 0.5);
-                backdrop-filter: blur20px;
-                -webkit-backdrop-filter: blur20px;
-              ">
-            <p>Quizz title : title</p>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-
-      <div class="quiz-card" style="
-            background-image: url(/images/cover-page--scaled.jpg);
-            background-position: center;
-            background-size: cover;
-          ">
-        <div class="quiz-num">
-          <div class="teacher-name" style="
-                background-color: rgba(12, 30, 192, 0.5);
-                backdrop-filter: blur20px;
-                -webkit-backdrop-filter: blur20px;
-              ">
-            <p>Quizz title : title</p>
-          </div>
-        </div>
-      </div>
+          <% }); %>
+            <% } else { %>
+              <p>No quizzes available.</p>
+              <% } %>
     </div>
   </div>
-  <script>
-    window.addEventListener("load", async () => {
-      const root = document.getElementById("root");
-      const emailElement = document.getElementById("email");
+</body>
+<script>
+  console.log('script quiz')
 
-      const loading = document.getElementById("loading");
-      const resultMessage = document.getElementById("resultMessage");
-      resultMessage.textContent = "";
-      // //get token from localhost
-      // const token = localStorage.getItem("token") || null;
-
-      // console.log(token);
-      // // if there is no token
-      // if (!token) {
-      //   resultMessage.textContent = "there is no token";
-      //   loading.style.display = "none";
-      //   return;
-      // }
-
+  async function onDeleteQuiz(id) {
+    console.log(id)
+    if (confirm('Are you sure you want to delete this quiz?')) {
       try {
-        //fetch data
-        const response = await fetch("/teachers/me", {
-          method: "GET",
-          // headers: {
-          //   "Content-Type": "application/json",
-          //   Authorization: `Bearer ${token}`,
-          // },
+        const url = `http://localhost:3000/quiz/${id}`;
+        console.log('Sending DELETE request to:', url);
+
+        const response = await fetch(url, {
+          method: 'DELETE',
         });
 
-        const responseData = await response.json();
-        console.log(responseData);
-        if (responseData.error) {
-          throw new Error(responseData.message || "Server error");
+        console.log('Response status:', response.status);
+
+        if (response.ok) {
+          alert('Quiz deleted successfully');
+          location.reload(); // Refresh the page
+        } else {
+          const errorText = await response.text();
+          console.error('Error response:', errorText);
+          alert(`Failed to delete quiz. Server responded with status ${response.status}`);
         }
-
-        // append data to html
-
-        emailElement.textContent = responseData.teacher.email;
       } catch (error) {
-        console.log("Error:", error);
-        resultMessage.textContent = `Error: ${error.message}`;
-      } finally {
-        // disable loading
-        loading.style.display = "none";
+        console.error('Error:', error);
+        alert('An error occurred while deleting the quiz');
       }
-    });
-  </script>
-</body>
+    }
+  }
+</script>
 
 </html>

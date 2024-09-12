@@ -99,6 +99,9 @@ body {
   background-color: blue;
   border-radius: 10px;
   text-align: center;
+  background-color: rgba(12, 30, 192, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 .items {
   display: flex;
@@ -106,3 +109,6 @@ body {
   align-items: center;
   gap: 5px;
 }
+
+
+

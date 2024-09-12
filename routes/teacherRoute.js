@@ -8,11 +8,11 @@ const { protect, allowedTo } = require('../middlewares/guard');
 const router = express.Router();
 
 router.route('/')
-  .get(protect, dashboardTeacher)
+  .get(protect,allowedTo('teacher'), dashboardTeacher)
 
 
 router.route('/me')
-  .get(protect, getTeacher)
+  .get(protect,allowedTo('teacher'), getTeacher)
 
 module.exports = router;
 

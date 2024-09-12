@@ -37,7 +37,7 @@ exports.createQuiz = expressAsyncHandler(async (req, res, next) => {
     const questionData = questions.map(question => ({
         text: question.text,
         numberOfPoints: question.numberOfPoints,
-        answerText: question.answer,
+        answers: question.answers,
         imagePath: question.imagePath || null
     }));
     try {
