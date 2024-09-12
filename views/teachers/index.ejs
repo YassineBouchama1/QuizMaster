@@ -5,98 +5,98 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Teacher Dashboard</title>
-  <link rel="stylesheet" href="/css/student.css" />
   <link rel="stylesheet" href="/css/teacher/dashboard.css" />
 </head>
 
 <body>
-  <h1 class="logo">JsSmartExam</h1>
 
-  <div class="content">
-    <div class="profile">
-      <img src="/images/profile.jpg" alt="" />
-      <div>
-        <div class="info">
-          <h1>
-            <%= user.firstName %>
-              <%= user.lastName %>
-          </h1>
-          <p>
-            <%= user.email %>
-          </p>
-        </div>
-        <div class="line"></div>
-        <div class="stats">
-          <div class="state">
-            <div class="icons">
-              <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                <path fill-rule="evenodd"
-                  d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z"
-                  clip-rule="evenodd" />
-              </svg>
-            </div>
-            <div class="items">
-              <h1>27</h1>
-              <p>Quiz Added</p>
-            </div>
+  <%- include("../layouts/navbarYassine.ejs") %>
+
+    <div class="content">
+      <div class="profile">
+        <img src="/images/profile.jpg" alt="" />
+        <div>
+          <div class="info">
+            <h1>
+              <%= user.firstName %>
+                <%= user.lastName %>
+            </h1>
+            <p>
+              <%= user.email %>
+            </p>
           </div>
-
-          <div class="state">
-            <div class="icons">
-              <svg class="w-6 h-6 text-blue-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                height="24" fill="currentColor" viewBox="0 0 24 24">
-                <path
-                  d="M13.09 3.294c1.924.95 3.422 1.69 5.472.692a1 1 0 0 1 1.438.9v9.54a1 1 0 0 1-.562.9c-2.981 1.45-5.382.24-7.25-.701a38.739 38.739 0 0 0-.622-.31c-1.033-.497-1.887-.812-2.756-.77-.76.036-1.672.357-2.81 1.396V21a1 1 0 1 1-2 0V4.971a1 1 0 0 1 .297-.71c1.522-1.506 2.967-2.185 4.417-2.255 1.407-.068 2.653.453 3.72.967.225.108.443.216.655.32Z" />
-              </svg>
+          <div class="line"></div>
+          <div class="stats">
+            <div class="state">
+              <div class="icons">
+                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                  width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                  <path fill-rule="evenodd"
+                    d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z"
+                    clip-rule="evenodd" />
+                </svg>
+              </div>
+              <div class="items">
+                <h1>27</h1>
+                <p>Quiz Added</p>
+              </div>
             </div>
-            <div class="items">
-              <h1>27</h1>
-              <p>Quiz Passed</p>
-            </div>
-          </div>
 
-          <div class="state">
-            <a href="/quiz/create">
-              <div class="icons">+</div>
-            </a>
-            <div class="items">
-              <h1></h1>
-              <p>Add Quiz</p>
+            <div class="state">
+              <div class="icons">
+                <svg class="w-6 h-6 text-blue-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                  height="24" fill="currentColor" viewBox="0 0 24 24">
+                  <path
+                    d="M13.09 3.294c1.924.95 3.422 1.69 5.472.692a1 1 0 0 1 1.438.9v9.54a1 1 0 0 1-.562.9c-2.981 1.45-5.382.24-7.25-.701a38.739 38.739 0 0 0-.622-.31c-1.033-.497-1.887-.812-2.756-.77-.76.036-1.672.357-2.81 1.396V21a1 1 0 1 1-2 0V4.971a1 1 0 0 1 .297-.71c1.522-1.506 2.967-2.185 4.417-2.255 1.407-.068 2.653.453 3.72.967.225.108.443.216.655.32Z" />
+                </svg>
+              </div>
+              <div class="items">
+                <h1>27</h1>
+                <p>Quiz Passed</p>
+              </div>
+            </div>
+
+            <div class="state">
+              <a href="/quiz/create">
+                <div class="icons">+</div>
+              </a>
+              <div class="items">
+                <h1></h1>
+                <p>Add Quiz</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <h1>Quizzes List</h1>
+      <h1>Quizzes List</h1>
 
-    <div class="quizzes">
-      <% if (quizzes && quizzes.length> 0) { %>
-        <% quizzes.forEach(quiz=> { %>
-          <div class="quiz-card"
-            style="background-image: url('<%= quiz.question_image %>'); background-position: center; background-size: cover;">
+      <div class="quizzes">
+        <% if (quizzes && quizzes.length> 0) { %>
+          <% quizzes.forEach(quiz=> { %>
+            <div class="quiz-card"
+              style="background-image: url('<%= quiz.question_image %>'); background-position: center; background-size: cover;">
 
-            <div class="quiz-num">
-              <div class="teacher-name" style="
+              <div class="quiz-num">
+                <div class="teacher-name" style="
                     background-color: rgba(12, 30, 192, 0.5);
                     backdrop-filter: blur(20px);
                     -webkit-backdrop-filter: blur(20px);
                   ">
-                <p>
-                  <%= quiz.title %>
-                </p>
-                <button class="delete-btn" onclick="onDeleteQuiz('<%= quiz.quiz_id %>')">Delete</button>
+                  <p>
+                    <%= quiz.title %>
+                  </p>
+                  <button class="delete-btn" onclick="onDeleteQuiz('<%= quiz.quiz_id %>')">Delete</button>
 
+                </div>
               </div>
             </div>
-          </div>
-          <% }); %>
-            <% } else { %>
-              <p>No quizzes available.</p>
-              <% } %>
+            <% }); %>
+              <% } else { %>
+                <p>No quizzes available.</p>
+                <% } %>
+      </div>
     </div>
-  </div>
 </body>
 <script>
   console.log('script quiz')

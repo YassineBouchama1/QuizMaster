@@ -109,18 +109,18 @@ FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE SET NULL
 );
 `
   ,
-  `
+  `   
 CREATE TABLE IF NOT EXISTS requests (
 id INT AUTO_INCREMENT PRIMARY KEY,
 status ENUM('pending','accept', 'decline') DEFAULT 'pending',  
-student_id INT, 
+student_id INT,  
 quiz_id INT, 
 description TEXT,
 deleted_at TIMESTAMP NULL DEFAULT NULL,
-created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,         
 FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE SET NULL,
 FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE SET NULL
-);
+);        
 `,
   `
   CREATE TABLE IF NOT EXISTS subjects (
@@ -133,5 +133,4 @@ FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE SET NULL
     )
     `
 ];
-
 

@@ -2,7 +2,7 @@
             font-family: Arial, sans-serif;
             background-color: #f0eeee;
             margin: 0;
-            padding: 20px;
+        
             color: #474343;
         }
 
@@ -15,7 +15,7 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
-            max-width: 50%;
+            max-width: 60%;
             margin: 0 auto;
             background-color: rgba(255, 255, 255, 0.13);
             border: 2px solid rgba(255, 255, 255, 0.1);
