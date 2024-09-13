@@ -67,3 +67,16 @@ exports.getSubjectDetails = async (req, res) => {
         res.status(500).send('Error retrieving subject details');
     }
 };
+
+
+exports.deleteSubject = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        await Subject.deleteSubject(id);
+        res.redirect('/subject/create'); // Redirect to a relevant page
+    } catch (error) {
+        console.error('Error deleting subject:', error);
+        res.status(500).send('Error deleting subject');
+    }
+};
