@@ -45,4 +45,3 @@ For testing the API, use the Postman collection:
 
 4. **Run the Application**
    ```npm start
-

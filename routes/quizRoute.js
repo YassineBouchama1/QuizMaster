@@ -2,6 +2,7 @@ const express = require('express');
 
 const { protect, allowedTo } = require('../middlewares/guard');
 const { createQuiz, quizForm, getQuizById, getAllQuizForTeacher, deleteQuiz, updateQuiz, quizBelongStudent, assignAttempToStudent } = require('../controllers/quizController');
+const uploadMiddleware = require('../middlewares/uploadMiddleware');
 
 
 const router = express.Router();
@@ -23,7 +24,7 @@ router.route('/attemp/:id')
 
 router.route('/create')
   .get(quizForm)
-  .post(protect, allowedTo('teacher'), createQuiz) //alowed only for teahcer
+  .post(protect, allowedTo('teacher'), uploadMiddleware.uploadQuestionImages, createQuiz) //alowed only for teahcer
 
 
 router.route("/:id")

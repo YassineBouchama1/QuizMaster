@@ -5,7 +5,8 @@ const answerModel = require('./answerModel')
 
 // add a new quiz along with its questions and answers in a single transaction
 const addQuizWithQuestions = (title, description, teacher_id, attempLimit, viewAnswers, seeResult, successScore, status, questions, callback) => {
-  console.log(questions)
+  console.log(questions.answers)
+
   db.beginTransaction(async err => {
     if (err) {
       console.error('Error starting transaction:', err.message);
@@ -17,9 +18,10 @@ const addQuizWithQuestions = (title, description, teacher_id, attempLimit, viewA
       const quizId = await insertQuiz(title, description, teacher_id, attempLimit, viewAnswers, seeResult, successScore, status);
 
       // insert questions and their answers
-      const questionPromises = questions.map(async ({ text, numberOfPoints, answerText }) => {
-        const questionId = await questionModel.insertQuestion(quizId, text, numberOfPoints);
-        await answerModel.insertAnswer(questionId, answerText);
+      const questionPromises = questions.map(async ({ text, numberOfPoints, answers, imagePath }) => {
+        const questionId = await questionModel.insertQuestion(quizId, text, numberOfPoints, imagePath);
+        await answers.map(({ text, isCorrect }) => answerModel.insertAnswer(questionId, text, isCorrect))
+
       });
 
       // wait for all questions and answers to be inserted
@@ -124,16 +126,34 @@ const getQuizWithAssociationsByQuizId = (quizId) => {
   });
 };
 
-// Get all quizzes belong teacher
+// Get all quizzes belonging to a teacher, including an image from a question linked to the quiz (where the image is not NULL)
 const getAllQuizzesBelongTeacher = (idTeacher) => {
   return new Promise((resolve, reject) => {
-    const sql = 'SELECT * FROM quizzes WHERE teacher_id = ?';
+    const sql = `
+      SELECT 
+        qz.id AS quiz_id, 
+        qz.title, 
+        qz.description, 
+        qz.attempLimit, 
+        qz.viewAnswers, 
+        qz.seeResult, 
+        qz.successScore, 
+        qz.status, 
+        qz.created_at,
+        q.text AS question_text,
+        q.image AS question_image
+      FROM quizzes qz
+      LEFT JOIN questions q ON q.quiz_id = qz.id AND q.image IS NOT NULL
+      WHERE qz.teacher_id = ?
+    `;
+
     db.query(sql, [idTeacher], (err, results) => {
       if (err) return reject(err);
-      else resolve(results)
+      else resolve(results);
     });
-  })
+  });
 };
+
 
 
 

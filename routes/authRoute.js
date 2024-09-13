@@ -18,6 +18,5 @@ router.route('/login')
   .post(loginTeacherApi);
 
 
-
-
+ 
 module.exports = router;

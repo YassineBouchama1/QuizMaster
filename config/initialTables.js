@@ -38,6 +38,7 @@ exports.Tables = [
       text VARCHAR(255) NOT NULL,
       quiz_id INT,
       numberOfPoints FLOAT DEFAULT 0.0,
+      image TEXT NULL,
       deleted_at TIMESTAMP NULL DEFAULT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
           FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE CASCADE
@@ -49,6 +50,7 @@ exports.Tables = [
       id INT AUTO_INCREMENT PRIMARY KEY,
       text VARCHAR(255) NOT NULL,
       question_id INT,
+      isCorrect BOOLEAN DEFAULT FALSE,
       deleted_at TIMESTAMP NULL DEFAULT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (question_id) REFERENCES questions(id) ON DELETE CASCADE
@@ -106,19 +108,19 @@ FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE SET NULL,
 FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE SET NULL
 );
 `
-,
-  `
+  ,
+  `   
 CREATE TABLE IF NOT EXISTS requests (
 id INT AUTO_INCREMENT PRIMARY KEY,
 status ENUM('pending','accept', 'decline') DEFAULT 'pending',  
-student_id INT, 
+student_id INT,  
 quiz_id INT, 
 description TEXT,
 deleted_at TIMESTAMP NULL DEFAULT NULL,
-created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,         
 FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE SET NULL,
 FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE SET NULL
-);
+);        
 `,
 
   `
@@ -145,5 +147,4 @@ CREATE TABLE IF NOT EXISTS subjects (
   `,
 
 ];
-
 

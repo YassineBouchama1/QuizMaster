@@ -2,10 +2,10 @@ const db = require('../config/database');
 
 
 // insert an answer into the answers table
-const insertAnswer = (questionId, answerText) => {
+const insertAnswer = (questionId, answerText, isCorrect) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO answers (text, question_id) VALUES (?, ?)';
-        db.query(sql, [answerText, questionId], (err, results) => {
+        const sql = 'INSERT INTO answers (text, question_id,isCorrect) VALUES (?, ?, ?)';
+        db.query(sql, [answerText, questionId, isCorrect], (err, results) => {
             if (err) {
                 return reject(new Error(`Error inserting answer: ${err.message}`));
             }
@@ -38,5 +38,6 @@ const findFirstActiveAttempt = (studentId, quizId) => {
 
 
 module.exports = {
-    insertAnswer
+    insertAnswer,
+    findFirstActiveAttempt
 }

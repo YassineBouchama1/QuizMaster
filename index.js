@@ -9,9 +9,11 @@ const classRouter = require('./routes/classRoute');
 const studentRouter = require('./routes/studentRoute');
 const homeRouter = require('./routes/homeRouter');
 const subjectRouter = require('./routes/subjectRouter');
+const requestRouter = require('./routes/requestRoute');
 
 
-const globalError = require('./middlewares/globalError')
+const globalError = require('./middlewares/globalError');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 app.use(methodOverride('_method'));
@@ -19,6 +21,7 @@ const port = process.env.PORT || 3000;
 
 
 // Middleware
+app.use(cookieParser()); // give u abilite to access cookies
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -31,13 +34,14 @@ app.set('view engine', 'ejs');
 
 
 // Routes
-app.use('/teachers', teacherRouter);
+app.use('/teacher', teacherRouter);
 app.use('/student', studentRouter);
 app.use('/auth', authRouter);
 app.use('/quiz', quizRouter);
 app.use('/class', classRouter);
 app.use('/students', studentRouter);
 app.use('/subject', subjectRouter);
+app.use('/request', requestRouter);
 
 
 

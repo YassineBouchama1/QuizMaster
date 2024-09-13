@@ -1,11 +1,28 @@
 const ApiError = require("../utils/ApiError");
 const studentModel = require('../models/studentModel');
 const expressAsyncHandler = require("express-async-handler");
+const quizModel = require('../models/quizModel');
 
 
 
-exports.allQuiz = (req, res) => {
-    res.render('students/index');
+exports.studentDashboard = async (req, res) => {
+
+    const { id } = req.user;
+
+
+
+    try {
+        const quizzes = await quizModel.getAllQuizzesBelongStudent(id);
+
+
+
+        res.render('students/index', { quizzes });
+    } catch (error) {
+        console.error('Error in controller:', error.message);
+        next(new ApiError(`Error: ${error.message}`, 500));
+    }
+
+
 };
 
 
