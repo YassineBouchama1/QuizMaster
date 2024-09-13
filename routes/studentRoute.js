@@ -5,7 +5,7 @@ const { protect, allowedTo } = require('../middlewares/guard');
 const router = express.Router();
 
 router.route('/')
-    .get(protect,allowedTo('student'),studentDashboard);
+    .get(protect, allowedTo('student'), studentDashboard);
 
 
 
