@@ -131,6 +131,6 @@ FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE SET NULL
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (subSubject_id) REFERENCES subjects(id) ON DELETE SET NULL
     )
-    `
+    `,
 ];
 
