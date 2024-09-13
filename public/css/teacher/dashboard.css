@@ -130,6 +130,7 @@
   @media (max-width: 750px) {
     .profile {
   flex-direction: column;
+  align-items: center;
     }
     .content {
       width: 90%;
@@ -140,13 +141,18 @@
       padding: 5px 0px;
  justify-content: center;
     }
+
+    .list-quiz{
+      text-align: center;
+      padding: 15px 0;
+    }
 }
 
 
 @media (max-width: 500px) {
   .stats {
 align-items: start;
-    flex-direction: column;
+    /* flex-direction: column; */
   }
 }
 

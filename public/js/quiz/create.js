@@ -105,7 +105,7 @@ quizForm.addEventListener('submit', async function (e) {
             quizForm.reset();
             questionsContainer.innerHTML = '';
             questionCount = 0;
-            window.location.replace('/teachers')
+            window.location.replace('/teacher')
         } else {
             throw new Error(data.message || 'Error creating quiz');
         }
