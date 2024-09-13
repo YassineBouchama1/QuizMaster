@@ -1,4 +1,5 @@
-const db = require('../config/database')
+const db = require('../config/database');
+const { deleteSubject } = require('../controllers/subjectController');
 
 
 // insert an Subject into the subjects table
@@ -16,10 +17,22 @@ const Subject = {
         });
     },
 
+    createSubSubject: (name, subSubject_id) => {
+        return new Promise((resolve, reject) => {
+            const query = 'INSERT INTO subjects (name, subSubject_id) VALUES (?,?)';
+            db.query(query, [name, subSubject_id], (err, result) => {
+                if(err) {
+                    return reject(err);
+                }
+                resolve(result);
+            })
+        })
+    },
+
 
     getAllSubject: () => {
         return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM subjects';
+            const sql = 'SELECT * FROM subjects WHERE subSubject_id IS NULL';
             db.query(sql, (err, results) => {
                 if (err) {
                     return reject(err);
@@ -27,8 +40,50 @@ const Subject = {
                 resolve(results);
             });
         });
+    },
+
+    getSubjectById: (id) => {
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM subjects WHERE id = ?';
+            // The error was here: 'db:query' should be 'db.query'
+            db.query(sql, [id], (err, result) => {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(result[0]);
+            });
+        });
+    },
+
+
+    getSubSubjects: (subjectId) => {
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM subjects WHERE subSubject_id = ?';
+            db.query(sql, [subjectId], (err, results) => {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(results);
+            });
+        });
+    },
+
+    
+    deleteSubject: (id) => {
+        return new Promise((resolve, reject) => {
+            const sql = 'DELETE FROM subjects WHERE id  = ?';
+            db.query(sql, [id], (err, results) => {
+                if(err) {
+                    return reject(err);
+                }
+                resolve(results);
+            })
+        })
     }
+
 };
+
+
 
 
 module.exports = Subject;

@@ -122,15 +122,29 @@ FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE SET NULL,
 FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE SET NULL
 );        
 `,
+
   `
-  CREATE TABLE IF NOT EXISTS subjects (
+CREATE TABLE IF NOT EXISTS subjects (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL UNIQUE,
+  subSubject_id INT NULL,
+  deleted_at TIMESTAMP NULL DEFAULT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (subSubject_id) REFERENCES subjects(id) ON DELETE SET NULL
+  );
+  `,
+
+  `
+  CREATE TABLE IF NOT EXISTS level (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL UNIQUE,
-    subSubject_id INT NULL,
-    deleted_at TIMESTAMP NULL DEFAULT NULL,
+    description VARCHAR(255) NOT NULL,
+    maxPoints FLOAT NOT NULL,
+    minPoints FLOAT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (subSubject_id) REFERENCES subjects(id) ON DELETE SET NULL
-    )
-    `,
+    deleted_at TIMESTAMP NULL DEFAULT NULL
+  );
+  `,
+
 ];
 
