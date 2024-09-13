@@ -43,7 +43,7 @@ exports.signUpTeacherApi = expressAsyncHandler(async (req, res, next) => {
 
     if (role === 'teacher' && !speciality) {
         return next(new ApiError('Speciality is required for teachers', 400));
-    }
+    } 
 
     try {
         //  check if email exists in either students or teachers
