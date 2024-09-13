@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const methodOverride = require('method-override');
 const teacherRouter = require('./routes/teacherRoute');
 const authRouter = require('./routes/authRoute');
 const guestRouter = require('./routes/guestRoute');
@@ -13,6 +14,7 @@ const subjectRouter = require('./routes/subjectRouter');
 const globalError = require('./middlewares/globalError')
 
 const app = express();
+app.use(methodOverride('_method'));
 const port = process.env.PORT || 3000;
 
 

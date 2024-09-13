@@ -1,4 +1,5 @@
-const db = require('../config/database')
+const db = require('../config/database');
+const { deleteSubject } = require('../controllers/subjectController');
 
 
 // insert an Subject into the subjects table
@@ -65,10 +66,20 @@ const Subject = {
                 resolve(results);
             });
         });
-    }
+    },
 
     
-
+    deleteSubject: (id) => {
+        return new Promise((resolve, reject) => {
+            const sql = 'DELETE FROM subjects WHERE id  = ?';
+            db.query(sql, [id], (err, results) => {
+                if(err) {
+                    return reject(err);
+                }
+                resolve(results);
+            })
+        })
+    }
 
 };
 
