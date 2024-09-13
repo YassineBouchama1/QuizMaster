@@ -57,6 +57,7 @@ exports.protect = expressAsyncHandler(async (req, res, next) => {
         return next(new ApiError('the user that belong to this token does no longer exist or token expired', 401))
     }
     req.user = currentUser // pass all information user loged in in request object%
+    console.log(currentUser)
     next()
 })
 

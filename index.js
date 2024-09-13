@@ -32,7 +32,7 @@ app.set('view engine', 'ejs');
 
 
 // Routes
-app.use('/teachers', teacherRouter);
+app.use('/teacher', teacherRouter);
 app.use('/student', studentRouter);
 app.use('/auth', authRouter);
 app.use('/quiz', quizRouter);
