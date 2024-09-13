@@ -22,31 +22,43 @@ exports.protect = expressAsyncHandler(async (req, res, next) => {
     console.log(token)
 
     if (!token) {
+
         return next(new ApiError('you are not login , plase login to get access  this route', 400))
     }
+    // req.headers.authorization = `Bearer ${token}`;
+
     //2) decoded Token 
     const decoded = jwt.verify(token, JWT_SECRET)
 
+    let currentUser;
 
+    if (decoded.role === 'student') {
+        // 3) If not found in the teachers table, check the students table
+        if (!currentUser) {
+            currentUser = await new Promise((resolve, reject) => {
+                studentModel.getStudentById(decoded.userId, (err, result) => {
+                    if (err) reject(err); // Handle errors
+                    else resolve(result);
+                });
+            });
+        }
+    }
 
-
-    // 3) Check if the user exists in the teachers table
-    let currentUser = await new Promise((resolve, reject) => {
-        teacherModel.getTeacherById(decoded.userId, (err, result) => {
-            if (err) reject(err); // Handle errors
-            else resolve(result);
-        });
-    });
-
-    // 4) If not found in the teachers table, check the students table
-    if (!currentUser) {
+    else if (decoded.role === 'teacher') {
+        // 3) Check if the user exists in the teachers table
         currentUser = await new Promise((resolve, reject) => {
-            studentModel.getStudentById(decoded.userId, (err, result) => {
+            teacherModel.getTeacherById(decoded.userId, (err, result) => {
                 if (err) reject(err); // Handle errors
                 else resolve(result);
             });
         });
+
     }
+    else {
+        return next(new ApiError('the user that belong to this token does no longer exist or token expired', 401))
+
+    }
+
 
 
 

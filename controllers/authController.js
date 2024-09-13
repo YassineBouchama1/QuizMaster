@@ -43,7 +43,7 @@ exports.signUpTeacherApi = expressAsyncHandler(async (req, res, next) => {
 
     if (role === 'teacher' && !speciality) {
         return next(new ApiError('Speciality is required for teachers', 400));
-    } 
+    }
 
     try {
         //  check if email exists in either students or teachers
@@ -160,5 +160,25 @@ exports.loginTeacherApi = expressAsyncHandler(async (req, res, next) => {
         });
     } catch (error) {
         next(new ApiError(`Error logging in: ${error.message}`, 500));
+    }
+});
+
+
+exports.logOut = expressAsyncHandler(async (req, res, next) => {
+    try {
+
+
+        res.clearCookie('token', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production'
+        });
+
+        res.status(200).json({
+            success: true,
+            message: 'Logout successful'
+        });
+
+    } catch (error) {
+        next(new ApiError(`Error during logout: ${error.message}`, 500));
     }
 });
