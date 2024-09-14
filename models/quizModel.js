@@ -74,6 +74,7 @@ const getQuizWithAssociationsByQuizId = (quizId) => {
         qs.id AS questionId, 
         qs.text AS questionText, 
         qs.numberOfPoints,
+        qs.image,  
         an.id AS answerId, 
         an.text AS answerText
       FROM quizzes q
@@ -107,6 +108,7 @@ const getQuizWithAssociationsByQuizId = (quizId) => {
               id: row.questionId,
               text: row.questionText,
               numberOfPoints: row.numberOfPoints,
+              image: row.image,
               answers: []
             };
           }

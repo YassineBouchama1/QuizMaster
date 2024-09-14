@@ -18,7 +18,7 @@ exports.editQuizForm = async (req, res, next) => {
         const quiz = await quizModel.findQuizById(id);
 
 
-        console
+
         res.render('teachers/quiz/edit', { quiz });
     } catch (error) {
         console.error('Error in controller:', error.message);
@@ -121,8 +121,11 @@ exports.getQuizById = expressAsyncHandler(async (req, res, next) => {
             }
 
         }
+        console.log(quiz)
+        res.render('quiz/yassine', { quiz });
 
-        res.status(200).json(quiz);
+
+        // res.status(200).json(quiz);
     } catch (error) {
         console.error('Error in controller:', error.message);
         next(new ApiError(`Error: ${error.message}`, 500));
