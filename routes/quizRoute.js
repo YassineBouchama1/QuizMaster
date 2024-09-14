@@ -22,9 +22,9 @@ router.route('/attemp/:id')
 
 
 
-router.route('/create')
-  .get(quizForm)
-  .post(protect, allowedTo('teacher'), uploadMiddleware.uploadQuestionImages, createQuiz) //alowed only for teahcer
+// router.route('/create')
+//   .get(protect, allowedTo('teacher'), quizForm)
+//   .post(protect, allowedTo('teacher'), uploadMiddleware.uploadQuestionImages, createQuiz) //alowed only for teahcer
 
 
 router.route("/:id")

@@ -60,13 +60,12 @@
     }
 
 
-    .create-btn {
-
-        background-color: #4D65E2;
+    .logout-btn {
+        background-color: #b9332f;
         border-radius: 4px;
         font-size: 16px;
         height: 40px;
-        width: 190px;
+        width: 150px;
         color: white !important;
         border: none;
         outline: none;
@@ -75,9 +74,14 @@
         justify-content: center;
         align-items: center;
         text-transform: uppercase;
+        cursor: pointer;
+        transition: all 1s linear;
     }
 
+    .logout-btn:hover {
+        background-color: #cf4a46;
 
+    }
 
     @media (max-width: 600px) {
         nav {
@@ -101,8 +105,44 @@
         <a href="/teacher/students">Studets</a>
     </div>
 
+    <div>
 
-    <a href="/quiz/create" class="create-btn">Create Quiz</a>
+        <!-- <a href="/quiz/create" class="create-btn">Create Quiz</a> -->
+        <button onclick="onLogout()" class="logout-btn">Logout</button>
+
+    </div>
+
 
 
 </nav>
+
+
+<script>
+
+
+    async function onLogout() {
+
+        if (confirm('Are you sure you want to Logout?')) {
+            try {
+                const url = `http://localhost:3000/auth/logout`;
+
+
+                const response = await fetch(url);
+
+                console.log('Response status:', response.status);
+
+                if (response.ok) {
+                    alert('LOGOUT successfully');
+                    window.replace('/auth/login')
+                } else {
+                    const errorText = await response.text();
+                    console.error('Error response:', errorText);
+                    alert(`Failed to delete quiz. Server responded with status ${response.status}`);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while deleting the quiz');
+            }
+        }
+    }
+</script>

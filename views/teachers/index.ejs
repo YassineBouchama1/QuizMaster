@@ -58,13 +58,16 @@
           </div>
         </div>
       </div>
+      <div class="title-list">
+        <h1 class="list-quiz">Quizzes List</h1>
+        <a href="/teacher/quiz" class="create-btn">Create Quiz</a>
 
-      <h1 class="list-quiz">Quizzes List</h1>
+      </div>
 
       <div class="quizzes">
         <% if (quizzes && quizzes.length> 0) { %>
           <% quizzes.forEach(quiz=> { %>
-            <div class="quiz-card"
+            <a href='/teacher/editQuiz/<%= quiz.quiz_id %>' class="quiz-card"
               style="background-image: url('<%= quiz.question_image %>'); background-position: center; background-size: cover;">
 
               <div class="quiz-num">
@@ -80,7 +83,7 @@
 
                 </div>
               </div>
-            </div>
+            </a>
             <% }); %>
               <% } else { %>
                 <p>No quizzes available.</p>

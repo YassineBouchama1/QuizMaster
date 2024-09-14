@@ -62,6 +62,9 @@ exports.protect = expressAsyncHandler(async (req, res, next) => {
 
 
 
+    const acceptsHtml = req.accepts('html');
+    const acceptsJson = req.accepts('json');
+
 
 
 
