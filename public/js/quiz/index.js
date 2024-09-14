@@ -1,7 +1,8 @@
-// public/js/quiz.js
 let currentQuestionIndex = 0;
 let quizData;
+let score = 0;
 
+// Load quiz data from the <script> tag
 function loadQuizData() {
     const scriptTag = document.getElementById('quiz-data');
     if (scriptTag) {
@@ -30,13 +31,11 @@ function displayQuestion(index) {
             <span class="question-number">${index + 1} of ${quizData.questions.length}</span>
         </div>
         <h2>${question.text}</h2>
-        
-              ${questionImage}
-
+        ${questionImage}
         <p>Points: ${question.numberOfPoints}</p>
         <div class="options-grid">
             ${question.answers.map((answer, i) => `
-                <div class="option option-${i}" onclick="selectAnswer(${index}, ${answer.id})">
+                <div class="option option-${i}" onclick="selectAnswer(${answer.isCorrect}, ${question.numberOfPoints})">
                     ${['A', 'B', 'C', 'D'][i]} &nbsp;&nbsp;&nbsp;&nbsp; ${answer.text}
                 </div>
             `).join('')}
@@ -45,15 +44,23 @@ function displayQuestion(index) {
     quizContainer.innerHTML = questionHtml;
 }
 
-function selectAnswer(questionIndex, answerId) {
-    console.log(`Question ${questionIndex + 1}, Answer ID ${answerId} selected`);
+function selectAnswer(isCorrect, numberOfPoints) {
+    // Add points if the answer is correct, otherwise add 0
+    score += isCorrect ? numberOfPoints : 0;
 
     currentQuestionIndex++;
     if (currentQuestionIndex < quizData.questions.length) {
         displayQuestion(currentQuestionIndex);
     } else {
-        quizContainer.innerHTML = '<h2>Quiz Completed!</h2>';
+        displayFinalScore();
     }
+}
+
+function displayFinalScore() {
+    quizContainer.innerHTML = `
+        <h2>Quiz Completed!</h2>
+        <h2>Your Final Score: ${score}</h2>
+    `;
 }
 
 // Start the quiz when the page loads
