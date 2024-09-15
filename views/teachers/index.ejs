@@ -42,12 +42,29 @@
           </div>
 
           <div class="state">
-            <a href="/level/create">
+            <a href="#" id="openModal">
               <div class="icons">+</div>
             </a>
             <div class="items">
               <h1></h1>
               <p>Add level</p>
+            </div>
+          </div>
+
+          <div id="myModal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <p>Ajouter un nouveau niveau ici.</p>
+              <label for="description">Description :</label>
+            <input type="text" id="description" name="description" required>
+      
+            <label for="min">Min :</label>
+            <input type="number" id="min" name="min" required>
+      
+            <label for="max">Max :</label>
+            <input type="number" id="max" name="max" required>
+      
+            <button type="submit">Ajouter</button>
             </div>
           </div>
 
@@ -85,6 +102,25 @@
   </div>
 </body>
 <script>
+
+var modal = document.getElementById("myModal");
+var btn = document.getElementById("openModal");
+var span = document.getElementsByClassName("close")[0];
+
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
   console.log('script quiz')
 
   async function onDeleteQuiz(id) {
