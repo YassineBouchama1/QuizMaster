@@ -9,14 +9,13 @@ const studentRouter = require('./routes/studentRoute');
 const homeRouter = require('./routes/homeRouter');
 const subjectRouter = require('./routes/subjectRouter');
 const requestRouter = require('./routes/requestRoute');
-
+const levelRouter = require('./routes/levelRoute');
 
 const globalError = require('./middlewares/globalError');
 const cookieParser = require('cookie-parser');
 
 const app = express();
 const port = process.env.PORT || 3000;
-
 
 // Middleware
 app.use(cookieParser()); // give u abilite to access cookies
@@ -40,6 +39,7 @@ app.use('/class', classRouter);
 app.use('/students', studentRouter);
 app.use('/subject', subjectRouter);
 app.use('/request', requestRouter);
+app.use('/levels', levelRouter);
 
 
 
@@ -54,9 +54,6 @@ app.use('*', (req, res, next) => {
   // next(new ApiError('not foun page', 404))
   return res.status(404).render('not-found');
 });
-
-
-
 
 // hlobal error handler
 app.use(globalError);
