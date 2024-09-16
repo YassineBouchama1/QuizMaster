@@ -41,6 +41,15 @@
               </div>
             </div>
 
+
+          <div class="state">
+            <a href="#" id="openModal">
+              <div class="icons">+</div>
+            </a>
+            <div class="items">
+              <h1></h1>
+              <p>Add level</p>
+
             <div class="state">
               <div class="icons">
                 <svg class="svg-icon" viewBox="0 0 20 20" width="24" height="24" fill="currentColor">
@@ -52,8 +61,28 @@
               <div class="items">
                 <p>Math</p>
               </div>
+
             </div>
 
+
+          <div id="myModal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <p>Ajouter un nouveau niveau ici.</p>
+          
+              <form action="/levels" method="POST">
+                <label for="description">Description :</label>
+                <input type="text" id="description" name="description" required>
+          
+                <label for="min">Min :</label>
+                <input type="number" id="min" name="min" required>
+          
+                <label for="max">Max :</label>
+                <input type="number" id="max" name="max" required>
+          
+                <button type="submit">Ajouter</button>
+              </form>
+            </div>
 
           </div>
         </div>
@@ -92,6 +121,43 @@
     </div>
 </body>
 <script>
+document.addEventListener('DOMContentLoaded', () => {
+  var modal = document.getElementById("myModal");
+  var btn = document.getElementById("openModal");
+  var span = document.getElementsByClassName("close")[0];
+
+  function openModal() {
+    modal.style.display = "flex";
+    setTimeout(() => {
+      modal.querySelector('.modal-content').style.opacity = "1";
+    }, 10);
+  }
+
+  function closeModal() {
+    modal.querySelector('.modal-content').style.opacity = "0";
+    setTimeout(() => {
+      modal.style.display = "none";
+    }, 300);
+  }
+
+  btn.onclick = openModal;
+  span.onclick = closeModal;
+
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      closeModal();
+    }
+  }
+
+  modal.querySelector('.modal-content').style.opacity = "0";
+});
+
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
   console.log('script quiz')
 
   async function onDeleteQuiz(id) {

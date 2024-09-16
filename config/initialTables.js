@@ -131,6 +131,19 @@ FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE SET NULL
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (subSubject_id) REFERENCES subjects(id) ON DELETE SET NULL
     )
+
+    `
+    ,
+`
+    CREATE TABLE IF NOT EXISTS levels (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      description VARCHAR(255) NOT NULL,
+      min INT NOT NULL,
+      max INT NOT NULL,
+      deleted_at TIMESTAMP NULL DEFAULT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  );`
+  
     `,
 ];
 
