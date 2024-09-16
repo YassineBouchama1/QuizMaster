@@ -19,7 +19,7 @@ const findRequestById = (requestId) => {
 const insertRequest = (idstudent, idQuiz, description) => {
 
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO requests (student_id, quiz_id,description) VALUES (?, ?)';
+        const sql = 'INSERT INTO requests (student_id, quiz_id,description) VALUES (?, ?, ?)';
         db.query(sql, [idstudent, idQuiz, description], (err, results) => {
 
             if (err) {
@@ -34,12 +34,17 @@ const insertRequest = (idstudent, idQuiz, description) => {
 
 const findAllRequests = (teacherId) => {
     const sql = `
-    SELECT requests.*, quizzes.title AS quiz_title
-    FROM requests
-    LEFT JOIN quizzes ON requests.quiz_id = quizzes.id
-    WHERE quizzes.teacher_id = ?;
+SELECT requests.*, 
+       quizzes.title AS quiz_title,
+       MIN(questions.image) AS question_image 
+FROM requests
+LEFT JOIN quizzes ON requests.quiz_id = quizzes.id
+LEFT JOIN questions ON questions.quiz_id = quizzes.id
+WHERE quizzes.teacher_id = ? 
+  AND requests.status = 'pending' -- Ensure status is 'pending'
+GROUP BY requests.id, quizzes.title;
     `;
-    
+
     return new Promise((resolve, reject) => {
         db.query(sql, [teacherId], (err, results) => {
             if (err) return reject(new Error(`Error finding requests: ${err.message}`));

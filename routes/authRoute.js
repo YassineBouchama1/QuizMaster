@@ -3,7 +3,8 @@ const {
   signUpTeacherForm,
   signUpTeacherApi,
   loginTeacherApi,
-  loginTeacherForm
+  loginTeacherForm,
+  logOut
 } = require('../controllers/authController');
 
 const router = express.Router();
@@ -18,5 +19,9 @@ router.route('/login')
   .post(loginTeacherApi);
 
 
- 
+router.route('/logout')
+  .get(logOut)
+
+
+
 module.exports = router;

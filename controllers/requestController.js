@@ -4,6 +4,29 @@ const expressAsyncHandler = require("express-async-handler");
 
 
 
+//pages 
+// @DESC :render pages html 
+exports.requestsTeacher = async (req, res, next) => {
+    const { id } = req.user;
+
+
+
+    try {
+        const requests = await requestModel.findAllRequests(id)
+
+        console
+        res.render('teachers/requests/index', { requests, user: req.user });
+    } catch (error) {
+        console.error('Error in controller:', error.message);
+        next(new ApiError(`Error: ${error.message}`, 500));
+    }
+
+
+
+}
+
+
+
 
 
 //@desc: this func for create request to play game again after reach limit attemps 
@@ -66,14 +89,14 @@ exports.getRequests = expressAsyncHandler(async (req, res, next) => {
 
 
 
-        const requestUpdated = await requestModel.findAllRequests(id)
+        const requests = await requestModel.findAllRequests(id)
 
 
 
         res.status(201).json({
             success: true,
-            message: 'Request Updated successfully',
-            result: requestUpdated
+            message: 'Request Fethced successfully',
+            result: requests
         });
     } catch (error) {
         console.error('Error in controller:', error.message);

@@ -74,8 +74,10 @@ const getQuizWithAssociationsByQuizId = (quizId) => {
         qs.id AS questionId, 
         qs.text AS questionText, 
         qs.numberOfPoints,
+        qs.image,  
         an.id AS answerId, 
-        an.text AS answerText
+        an.text AS answerText,  
+        an.isCorrect AS isCorrect
       FROM quizzes q
       LEFT JOIN questions qs ON q.id = qs.quiz_id
       LEFT JOIN answers an ON qs.id = an.question_id
@@ -107,13 +109,15 @@ const getQuizWithAssociationsByQuizId = (quizId) => {
               id: row.questionId,
               text: row.questionText,
               numberOfPoints: row.numberOfPoints,
+              image: row.image,
               answers: []
             };
           }
           if (row.answerId) {
             questions[row.questionId].answers.push({
               id: row.answerId,
-              text: row.answerText
+              text: row.answerText,
+              isCorrect: row.isCorrect
             });
           }
         }

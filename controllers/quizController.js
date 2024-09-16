@@ -6,6 +6,32 @@ const ApiError = require('../utils/ApiError');
 // @DESC: Render HTML form for creating a quiz
 exports.quizForm = (req, res) => res.render('teachers/quiz/create');
 
+
+//@desc update form:
+// @DESC :render pages html 
+exports.editQuizForm = async (req, res, next) => {
+    const { id } = req.params;
+
+
+
+    try {
+        const quiz = await quizModel.findQuizById(id);
+
+
+
+        res.render('teachers/quiz/edit', { quiz });
+    } catch (error) {
+        console.error('Error in controller:', error.message);
+        next(new ApiError(`Error: ${error.message}`, 500));
+    }
+
+
+
+}
+
+
+
+
 // @DESC: Create quiz and associated questions
 // @ROUTE: POST quiz/
 // @ACCESS: Private
@@ -95,8 +121,11 @@ exports.getQuizById = expressAsyncHandler(async (req, res, next) => {
             }
 
         }
+        console.log(quiz)
+        res.render('quiz/yassine', { quiz });
 
-        res.status(200).json(quiz);
+
+        // res.status(200).json(quiz);
     } catch (error) {
         console.error('Error in controller:', error.message);
         next(new ApiError(`Error: ${error.message}`, 500));
@@ -173,33 +202,32 @@ exports.deleteQuiz = expressAsyncHandler(async (req, res, next) => {
 
 
 
-
 exports.updateQuiz = expressAsyncHandler(async (req, res, next) => {
     const { id } = req.params;
-    const updateData = req.body;
+    const { title, description, viewAnswers, seeResult, successScore, status, attempLimit } = req.body;
+
+    console.log(req.body)
 
     try {
-        // check if the quiz exists
-        const quizExists = await quizModel.findQuizById(id);
+        // Update the quiz in the database
+        const updateData = {
+            title,
+            description,
+            viewAnswers: !!parseInt(viewAnswers),
+            seeResult: !!parseInt(seeResult),
+            successScore,
+            status,
+            attempLimit
+        };
 
-        if (!quizExists) {
-            return next(new ApiError('Quiz not found', 404));
-        }
-
-        // update the quiz with only the provided fields
         const updatedQuiz = await quizModel.updateQuizById(id, updateData);
 
-        res.status(200).json({
-            success: true,
-            message: 'Quiz updated successfully',
-            result: updatedQuiz
-        });
-
-    } catch (error) {
-        console.error('Error in controller:', error.message);
-        next(new ApiError(`Error: ${error.message}`, 500));
+        res.json({ success: true, message: 'Quiz updated successfully', result: updatedQuiz });
+    } catch (err) {
+        res.json({ success: false, message: err.message });
     }
 });
+
 
 
 

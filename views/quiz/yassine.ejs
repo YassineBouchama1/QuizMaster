@@ -1,0 +1,89 @@
+<!-- views/quiz.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= quiz.title %>
+    </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .question-number {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .option {
+            padding: 15px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 1s linear;
+        }
+
+        .option:hover {
+            opacity: 0.8;
+
+        }
+
+        .option-0 {
+            background-color: #dc3545;
+        }
+
+        .option-1 {
+            background-color: #007bff;
+        }
+
+        .option-2 {
+            background-color: #ffc107;
+        }
+
+        .option-3 {
+            background-color: #28a745;
+        }
+
+        .question-image {
+            width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 id="quiz-title"></h1>
+    <p id="quiz-description"></p>
+    <div id="quiz-container">
+        <!-- Questions will be dynamically inserted here -->
+    </div>
+
+    <script id="quiz-data" type="application/json">
+        <%- JSON.stringify(quiz) %>
+    </script>
+    <script src="/js/quiz/index.js"></script>
+</body>
+
+</html>
